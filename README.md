@@ -22,3 +22,4 @@ This course dives into Python as applied to Network Engineering.
 - [ ] SSH and Concurrency
 - [ ] *Using a REST API (Plus and Premium Packages Only)
 - [ ] *pytest, tox, and Travis CI (Premium Package Only)
+- [ ] Play aroung with modifying files and commit conflicts
