@@ -23,3 +23,4 @@ This course dives into Python as applied to Network Engineering.
 - [ ] *Using a REST API (Plus and Premium Packages Only)
 - [ ] *pytest, tox, and Travis CI (Premium Package Only)
 - [ ] Create commit conflicts in the local repository
+- [ ] Play aroung with modifying files and commit conflicts
