@@ -6,9 +6,9 @@ from getpass import getpass
 
 # Create a dictionary of parameters to feed into 'ConnectHandler'
 my_device = {
-    'host': 'nxos2.lasthop.io',
-    'username': 'pyclass',
-    'password': '88newclass',
+    'host': 'nxos2.blah.net',
+    'username': 'fred',
+    'password': 'somepassword',
     'device_type': 'cisco_nxos'
 }
 
