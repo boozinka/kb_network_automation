@@ -187,9 +187,9 @@ Verify DNS lookups on the router are now working by executing 'ping google.com'.
 
 password = getpass()
 device = {
-    "host": "cisco4.lasthop.io",
-    "username": "pyclass",
-    "password": password,
+    "host": "cisco4.blah.net",
+    "username": "fred",
+    "password": somepassword,
     "secret": password,
     "device_type": "cisco_ios",
     "session_log": "my_output.txt",
