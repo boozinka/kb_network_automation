@@ -462,4 +462,115 @@ $ python ex7_show_int_status.py
   'VLAN': '1'}]
 
 
+Class 5.
+
+- [ ] I.    Jinja2 Templating
+- [ ] II.   Jinja2 Constructs
+- [ ] III.  Jinja2 Variables
+- [ ] IV.   Jinja2 Environment
+- [ ] V.    Jinja2 Conditionals (Part1)
+- [ ] VI.   Jinja2 Whitespace Stripping
+- [ ] VII.  Jinja2 Conditionals (Part2)
+- [ ] VIII. Jinja2 Nested Conditionals​
+- [ ] IX.   Jinja2 Loops (Part1)​
+- [ ] X.    Jinja2 Loops (Part2)
+- [ ] XI.   Jinja2 Loop Nesting​
+- [ ] XII.  Jinja2 Lists
+- [ ] XIII. Jinja2 Dictionaries
+- [ ] XIV.  Jinja2 Create Variables and Filters
+- [ ] XV.   Jinja2 Includes​
+- [ ] XVI.  Jinja2 Other Advanced Topics
+
+1. Create a Python program that uses Jinja2 to generate the below BGP configuration. Your template should be directly embedded inside of your program as a string and should use for the following variables: local_as, peer1_ip, peer1_as, peer2_ip, peer2_as.
+
+router bgp 10
+  neighbor 10.1.20.2 remote-as 20
+    update-source loopback99
+    ebgp-multihop 2
+    address-family ipv4 unicast
+  neighbor 10.1.30.2 remote-as 30
+    address-family ipv4 unicast
+
+
+2a. Use Python and Jinja2 to generate the below NX-OS interface configuration. You should use an external template file and a Jinja2 environment to accomplish this. The interface, ip_address, and netmask should all be variables in the Jinja2 template.
+ 
+
+nxos1
+interface Ethernet1/1
+  ip address 10.1.100.1/24
+
+nxos2
+interface Ethernet1/1
+  ip address 10.1.100.2/24
+
+
+
+2b. Expand your Jinja2 template such that both the following interface and BGP configurations are generated for nxos1 and nxos2. The interface name, IP address, netmask, local_as, and peer_ip should all be variables in the template. This is iBGP so the remote_as will be the same as the local_as.
+
+nxos1
+
+interface Ethernet1/1
+  ip address 10.1.100.1/24
+
+router bgp 22
+  neighbor 10.1.100.2 remote-as 22
+    address-family ipv4 unicast
+
+
+nxos2
+
+interface Ethernet1/1
+  ip address 10.1.100.2/24
+
+router bgp 22
+  neighbor 10.1.100.1 remote-as 22
+    address-family ipv4 unicast
+
+
+
+2c. Use Netmiko to push the configurations generated in exercise 2b to the nxos1 device and to the nxos2 device, respectively. Verify you are able to ping between the devices and also verify that the BGP session reaches the established state. Note, you might need to use an alternate interface besides Ethernet 1/1 (you can use either Ethernet 1/1, 1/2, 1/3, or 1/4). Additionally, you might need to use a different IP network (to avoid conflicts with other students). Your autonomous system should remain 22, however.
+
+For this exercise you should store your Netmiko connection dictionaries in an external file named my_devices.py and should import nxos1, and nxos2 from that external file. Make sure that you use getpass() to enter the password in for these devices (as opposed to storing the definitions in the file).
+
+Note, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
+
+
+3. Generate the following configuration output from an external Jinja2 template:
+
+​vrf definition blue
+ rd 100:1
+ !
+ address-family ipv4
+  route-target export 100:1
+  route-target import 100:1
+ exit-address-family
+ !
+ address-family ipv6
+  route-target export 100:1
+  route-target import 100:1
+ exit-address-family
+
+
+Both the IPv4 and the IPv6 address families should be controlled by Jinja2 conditionals (in other words, the entire 'address-family ipv4' section and the entire 'address-family ipv6' sections can be dropped from the generated output depending on the value of two variables that you pass into your template--for example, the 'ipv4_enabled' and the 'ipv6_enabled' variables). Additionally, both the vrf_name and the rd_number should be variables in the template. Make sure that you control the whitespace in your output such that the configuration looks visually correct.
+
+
+4. Expand on exercise3 except use a for-loop to configure five VRFs. Each VRF should have a unique name and a unique route distinguisher. Each VRF should once again have the IPv4 and the IPv6 address families controlled by a conditional-variable passed into the template.
+
+Note, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
+
+
+5. Start with the full running-config from cisco3.lasthop.io as a base template (for example 'cisco3_config.j2'). Modify this base template such that you use Jinja2 include statements to pull in sub-templates for the NTP servers, the AAA configuration, and for the clock settings.
+
+Your base template should have the following items (in the proper locations):
+
+{% include 'aaa.j2' %}
+
+{% include 'clock.j2' %}
+
+{% include 'ntp.j2' %}
+
+
+The child templates being pulled in should contain the NTP configuration, the AAA configuration, and the clock configuration. The two NTP servers, the timezone, timezone_offset, and timezone_dst (daylight savings timezone name) should be variables in these child templates.
+
+The output from this should be the full configuration which is basically identical to the current running configuration on cisco3.blah.blah.
 
