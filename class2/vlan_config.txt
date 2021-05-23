@@ -1,0 +1,16 @@
+vlan 101
+name VLAN-101
+exit
+vlan 102
+name VLAN-102
+exit
+vlan 103
+name VLAN-103
+exit
+vlan 104
+name VLAN-104
+exit
+vlan 105
+name VLAN-105
+exit
+
