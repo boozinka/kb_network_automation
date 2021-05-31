@@ -5,7 +5,6 @@ from my_devices import nxos1, nxos2
 from netmiko import ConnectHandler
 from jinja2 import FileSystemLoader, StrictUndefined
 from jinja2.environment import Environment
-from getpass import getpass
 from pprint import pprint
 import time
 import re
@@ -17,7 +16,6 @@ env.loader = FileSystemLoader('./templates')
 
 
 # Assign varibles
-#password = getpass()
 nxos1_dict = {'interface': 'Ethernet1/1',
              'ip_addr': '10.1.100.1',
              'netmask': 24,
