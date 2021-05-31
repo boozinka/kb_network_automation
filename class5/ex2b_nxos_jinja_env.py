@@ -21,6 +21,10 @@ nxos2_dict = {'interface': 'Ethernet1/1',
              'bgp_as': 22
  }
 
+# Update dictionaries with 'peer_ip' addresses
+nxos1_dict['peer_ip'] = nxos2_dict['ip_addr']
+nxos2_dict['peer_ip'] = nxos1_dict['ip_addr']
+
 # Loop through each dictionary
 for var in (nxos1_dict, nxos2_dict):
     template_file = 'ex2b_nxos_jinja_env.j2'
