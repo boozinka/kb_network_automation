@@ -574,3 +574,51 @@ The child templates being pulled in should contain the NTP configuration, the AA
 
 The output from this should be the full configuration which is basically identical to the current running configuration on cisco3.blah.blah.
 
+
+Class 6.
+
+- [ ] I.    Arista eAPI Introduction
+- [ ] II.   Arista eAPI Request Structure
+- [ ] III.  Arista eAPI using Python-Requests Library
+- [ ] IV.   Creating a Basic Connection using pyeapi
+- [ ] V.    Creating Connections using pyeapi and .eapi.conf
+- [ ] VI.   Executing Show Commands using pyeapi
+- [ ] VII.  Configuring Devices using pyeapi
+- [ ] VIII. Using the .api() method in pyeapi
+- [ ] IX.   Arista eAPI Conclusion
+
+1. Using the pyeapi library, connect to arista3.lasthop.io and execute 'show ip arp'. From this ARP table data, print out a mapping of all of the IP addresses and their corresponding MAC addresses.
+
+2a. Define an Arista device in an external YAML file (use arista4.blah.blah for the device). In your YAML file, make sure the key names exactly match the names required for use with pyeapi and the connect() method. In other words, you should be able to execute 'connect(**device_dict)' where device_dict was retrieved from your YAML file. Do not store the lab password in this YAML file, instead set the password using getpass() in your Python program. Using this Arista device information stored in a YAML file, repeat the 'show ip arp' retrieval using pyeapi. Once again, from this ARP table data, print out a mapping of all of the IP addresses and their corresponding MAC addresses.
+
+2b. Create a Python module named 'my_funcs.py'. In this file create two functions: function1 should read the YAML file you created in exercise 2a and return the corresponding data structure; function2 should handle the output printing of the ARP entries (in other words, create a separate function that handles all printing to standard out of the 'show ip arp' data). Create a new Python program based on exercise2a except the YAML file loading and the output printing is accomplished using the functions defined in my_funcs.py.
+
+3. Using your external YAML file and your function located in my_funcs.py, use pyeapi to connect to arista4.lasthop.io and retrieve "show ip route". From this routing table data, extract all of the static and connected routes from the default VRF. Print these routes to the screen and indicate whether the route is a connected route or a static route. In the case of a static route, print the next hop address.
+
+4. Note, this exercise might be fairly challenging. Construct a new YAML file that contains the four Arista switches. This YAML file should contain all of the connection information need to create a pyeapi connection using the connect method. Using this inventory information and pyeapi, create a Python script that configures the following on the four Arista switches:  
+
+interface {{ intf_name }}
+   ip address {{ intf_ip }}/{{ intf_mask }}
+
+The {{ intf_name }} should be a Loopback interface between 1 and 99 (for example Loopback99).
+
+The {{ intf_ip }} should be an address from the 172.31.X.X address space. The {{ intf_mask }} should be either a /24 or a /30.
+
+Each Arista switch should have a unique loopback number, and a unique interface IP address.
+
+You should use Jinja2 templating to generate the configuration for each Arista switch.
+
+The data for {{ intf_name }} and for {{ intf_ip }} should be stored in your YAML file and should be associated with each individual Arista device. For example, here is what 'arista4' might look like in the YAML file:
+
+arista4:
+  transport: https
+  host: arista4.blah.blah
+  username: fred
+  port: 443
+  data:
+    intf_name: Loopback99
+    intf_ip: 172.31.1.13
+    intf_mask: 30
+
+Use pyeapi to push this configuration to the four Arista switches. Use pyeapi and "show ip interface brief" to display the IP address table after the configuration changes have been made.
+
