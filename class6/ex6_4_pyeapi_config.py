@@ -15,10 +15,6 @@ env = Environment(undefined=StrictUndefined)
 # Set template file location (sub-directory of pwd)
 env.loader = FileSystemLoader('./templates')
 
-# Assign varibles
-arp_dict = {}
-device_arp_list = []
-
 # import connection details/device from yaml file
 my_devices = yaml_import('ex6_4_my_devices.yml')
 
