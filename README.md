@@ -622,3 +622,233 @@ arista4:
 
 Use pyeapi to push this configuration to the four Arista switches. Use pyeapi and "show ip interface brief" to display the IP address table after the configuration changes have been made.
 
+
+Class 7.
+
+- [ ] I.     XML - Why Care? 
+- [ ] II.    XML Introduction
+- [ ] III.   XML Terminology
+- [ ] IV.    xmltodict Library 
+- [ ] V.     xmltodict and the List Problem 
+- [ ] VI.    xmltodict and Attributes
+- [ ] VII.   Python-lxml Basics
+- [ ] VIII.  Built-in XML Library and ElementTree 
+- [ ] IX.    lxml and Traversing the XML Tree  
+- [ ] X.     lxml and findall()
+- [ ] XI.    XML and Namespaces 
+- [ ] XII.   lxml and Handling Namespaces
+- [ ] XIII.  NX-API Overview
+- [ ] XIV.   NX-API and JSON-RPC
+- [ ] XV.    NX-API and XML
+
+
+1. Reading and accessing an XML file:
+
+1a. Using the show_security_zones.xml file, read the file contents and parse the file using etree.fromstring(). Print out the newly created XML variable and also print out the variable's type. Your output should look similar to the following: 
+
+<Element zones-information at 0x7f3271194b48>
+<class 'lxml.etree._Element'>
+
+1b. Using your XML variable from exercise 1a, print out the entire XML tree in a readable format (ensure that the output string is a unicode string).
+
+
+1c. Print out the root element tag name (this tag should have a value of "zones-information"). Print the number of child elements of the root element (you can retrieve this using the len() function).
+
+
+1d. Using both direct indices and the getchildren() method, obtain the first child element and print its tag name. 
+
+
+1e. Create a variable named "trust_zone". Assign this variable to be the first "zones-security" element in the XML tree. Access this newly created variable and print out the text of the "zones-security-zonename" child.
+
+
+1f. Iterate through all of the child elements of the "trust_zone" variable. Print out the tag name for each child element.
+
+
+2. xmltodict basics
+
+2a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. Note, the newly created object is an OrderedDict; not a traditional dictionary.
+
+
+2b. Print the names and an index number of each security zone in the XML data from Exercise 2a. Your output should look similar to the following (tip, enumerate will probably help): 
+
+Security Zone #1: trust
+Security Zone #2: untrust
+Security Zone #3: junos-host
+
+
+3. xmltodict: single vs multiple elements
+
+3a. Open the following two XML files: show_security_zones.xml and show_security_zones_single_trust.xml. Use a generic function that accepts an argument "filename" to open and read a file. Inside this function, use xmltodict to parse the contents of the file. Your function should return the xmltodict data structure. Using this function, create two variables to store the xmltodict data structure from the two files.
+
+
+3b. Compare the Python "type" of the elements at ['zones-information']['zones-security']. What is the difference between the two data types? Why?
+
+
+3c. Optional - create a second function that uses xmltodict to read and parse a filename that you pass in. This function should support a "force_list" argument that is passed to xmltodict.parse(). Reminder, the force_list argument of xmltodict takes a dictionary where the dictionary key-name is the XML element that is required to be a list. For example:
+
+force_list={"zones-security": True}
+
+Use this new function to parse the "show_security_zones_single_trust.xml". Verify the Python data type is now a list for the ['zones-information']['zones-security'] element.
+
+
+4. Use lxml to find() elements in an XML tree
+
+4a. Use the find() method to retrieve the first "zones-security" element. Print out the tag of this element and of all its children elements. Your output should be similar to the following:
+
+Find tag of the first zones-security element
+--------------------
+zones-security
+
+Find tag of all child elements of the first zones-security element
+--------------------
+zones-security-zonename
+zones-security-send-reset
+zones-security-policy-configurable
+zones-security-interfaces-bound
+zones-security-interfaces
+
+
+4b. Use the find() method to find the first "zones-security-zonename". Print out the zone name for that element (the "text" of that element).
+
+
+4c. Use the findall() method to find all occurrences of "zones-security". For each of these security zones, print out the security zone name ("zones-security-zonename", the text of that element).
+
+
+5. Dealing with Namespaces
+
+Namespaces in XML help to differentiate between conflicting element names. 
+
+5a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. Note this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
+
+
+5b. Similar to earlier exercises, use the find() method to access the text of the "proc_board_id" element (serial number). As this XML object contains namespace data, you will need to use the {*} namespace wildcard in the find() method. Your find call should look as follows:
+
+find(".//{*}proc_board_id")
+
+The {*} is a namespace wildcard and says to match ALL namespaces.
+
+
+6. NX-API using json-rpc and the nxapi_plumbing library
+
+6a. Create an nxapi_plumbing "Device" object for nxos1. The api_format should be "jsonrpc" and the transport should be "https" (port 8443). Use getpass() to capture the device's password. Send the "show interface Ethernet1/1" command to the device, parse the output, and print out the following information:
+
+Interface: Ethernet1/1; State: up; MTU: 1500
+
+
+7. NX-API using XML and the nxapi_plumbing library
+
+7a. Create an nxapi_plumbing "Device" object for nxos1. The api_format should be "xml" and the transport should be "https" (port 8443). Use getpass() to capture the device's password. Send the "show interface Ethernet1/1" command to the device, parse the output, and print out the following information:
+
+Interface: Ethernet1/1; State: up; MTU: 1500
+
+
+7b. Run the following two show commands on the nxos1 device using a single method and passing in a list of commands: "show system uptime" and "show system resources". Print the XML output from these two commands.
+
+
+7c. Using the nxapi_plumbing config_list() method, configure two loopbacks on nxos1 including interface descriptions. Pick random loopback interface numbers between 100 and 199.
+
+
+Class 8.
+
+- [ ] I.    NETCONF Overview
+- [ ] II.   NETCONF and ncclient
+- [ ] III.  Juniper PyEZ - Creating a Basic Connection
+- [ ] IV.   Juniper PyEZ - Tables (Part1)
+- [ ] V.    Juniper PyEZ - Tables (Part2)
+- [ ] VI.   Juniper PyEZ - Configuration Basics 
+- [ ] VII.  Juniper PyEZ - Config Changes from a File
+- [ ] VIII. Juniper PyEZ - Configuration and XML
+- [ ] IX.   Juniper PyEZ - RPC
+
+
+1. PyEZ basic connection and facts:
+
+1a. Create a PyEZ Device object from the jnpr.junos Device class. This device object should connect to "srx2.lasthop.io". Use getpass() to enter the device's password. Pretty print all of the device's facts. Additionally, retrieve and print only the "hostname" fact.
+
+
+2. PyEZ Tables/Views:
+
+2a. Create a Python module named jnpr_devices.py. This Python module should contain a dictionary named "srx2". This "srx2" dictionary should contain all of the key-value pairs needed to establish a PyEZ connection. You should use getpass() for the password handling. You should import this "srx2" device definition for all of the remaining exercises in class8.
+
+2b. Create a Python program that creates a PyEZ Device connection to "srx2" (using the previously created Python module). Using this PyEZ connection and the RouteTable and ArpTable views retrieve the routing table and the arp table for srx2.
+
+This program should have four separate functions:
+1. check_connected() - Verify that your NETCONF connection is working. You can use the .connected attribute to check the status of this connection.
+2. gather_routes() - Return the routing table from the device.
+3. gather_arp_table() - Return the ARP table from the device.
+4. print_output() - A function that takes the Juniper PyEZ Device object, the routing table, and the ARP table and then prints out the: hostname, NETCONF port, username, routing table, ARP table
+
+This program should be structured such that all of the four functions could be reused in other class8 exercises.
+
+
+3. PyEZ configuration operations (Part 1):
+
+3a. Open a connection to the srx2 device and acquire a configuration lock. Validate that the configuration session is indeed locked by SSH'ing into the device and attempting to enter configuration mode ("configure"). Reuse, the 'srx2' device definition from the jnpr_devices.py file that you created in exercise2.
+
+You should receive a prompt similar to the following: 
+
+pyclass@srx2> configure
+Entering configuration mode
+Users currently editing the configuration:
+  pyclass (pid 30316) on since 2019-03-08 18:30:51 PST
+      exclusive
+
+Add code to attempt to lock the configuration again. Gracefully handle the "LockError" exception (meaning the configuration is already locked).
+
+3b. Use the "load" method to stage a configuration using a basic set command, for example, "set system host-name python4life".
+
+3c. Print the diff of the current configuration with the staged configuration. Your output should look similar to the following: 
+
+[edit system]
+-  host-name srx2;
++  host-name python4life;
+
+3d. Rollback the staged configuration. Once again, print out the diff of the staged and the current configuration (which at this point should be None).
+
+
+4. PYeZ configuration operations (Part 2):
+
+4a. Using the previously created jnpr_devices.py file, open a connection to srx2 and gather the current routing table information.
+
+4b. Using PyEZ stage a configuration from a file. The file should be "conf" notation. This configuration should add two static host routes (routed to discard). These routes should be from the RFC documentation range of 203.0.113.0/24 (picking any /32 in that range should be fine). Use "merge=True" for this configuration. For example: 
+
+routing-options {
+    static {
+        route 203.0.113.5/32 discard;
+        route 203.0.113.200/32 discard;
+    }
+}
+
+4c. Reusing your gather_routes() function from exercise2, retrieve the routing table before and after you configuration change. Print out the differences in the routing table (before and after the change). To simplify the problem, you can assume that the only change will be *additional* routes added by your script.
+
+4d. Using PyEZ delete the static routes that you just added. You can use either load() and set operations or load() plus a configuration file to accomplish this.
+
+
+5. PYeZ using direct RPC:
+
+5a. Connect to the srx2 device. Using an RPC call, gather and pretty-print the "show version" information. Recall that you can retrieve RPC method name by running "show version | display xml rpc" argument. Also don't forget to convert the hyphens to underscores. Your output should match the following: 
+
+<software-information>
+<host-name>srx2</host-name>
+<product-model>srx110h2-va</product-model>
+<product-name>srx110h2-va</product-name>
+<jsr/>
+<package-information>
+<name>junos</name>
+<comment>JUNOS Software Release [12.1X46-D35.1]</comment>
+</package-information>
+</software-information>
+
+5b. Using a direct RPC call, gather the output of "show interfaces terse". Print the output to standard out.
+
+5c. Modify the previous task to capture "show interface terse", but this time only for "fe-0/0/7". Print the output to standard out. Use normalize=True in the RPC method call to make the output more readable. You will also need to add pretty_print=True to the etree.tostring() call. Consequently, your code should be similar to the following: 
+
+xml_out = dev.rpc.get_interface_information(interface_name="fe-0/0/7", terse=True, normalize=True)
+print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
+
+
+
+Class 9.
+
+
+
