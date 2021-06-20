@@ -849,11 +849,11 @@ print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
 
 Class 9.
 
- - [] I.   NAPALM Overview​
- - [] II.  NAPALM - Simple Connection​
- - [] III. NAPALM - Getters
- - [] IV.  NAPALM - Configuration Merge
- - [] V.   NAPALM - Configuration Replace
+ - [ ] I.   NAPALM Overview​
+ - [ ] II.  NAPALM - Simple Connection​
+ - [ ] III. NAPALM - Getters
+ - [ ] IV.  NAPALM - Configuration Merge
+ - [ ] V.   NAPALM - Configuration Replace
  
  
  1. Simple NAPALM Connections and Facts
