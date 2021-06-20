@@ -847,8 +847,68 @@ xml_out = dev.rpc.get_interface_information(interface_name="fe-0/0/7", terse=Tru
 print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
 
 
-
 Class 9.
 
+ - [] I.   NAPALM Overview​
+ - [] II.  NAPALM - Simple Connection​
+ - [] III. NAPALM - Getters
+ - [] IV.  NAPALM - Configuration Merge
+ - [] V.   NAPALM - Configuration Replace
+ 
+ 
+ 1. Simple NAPALM Connections and Facts
+
+1a. Create a Python file named "my_devices.py" that defines the NAPALM connection information for both the 'cisco3' device and the 'arista1' device. Use getpass() for the password handling. This Python module should be used to store the device connection information for all of the exercises in this lesson.
+
+1b. Create a simple function that accepts the NAPALM device information from the my_devices.py file and creates a NAPALM connection object. This function should open the NAPALM connection to the device and should return the NAPALM connection object.
+
+1c. Using your "my_devices.py" file and your NAPALM connection function, create a list of NAPALM connection objects to 'cisco3' and 'arista1'.
+
+1d. Iterate through the connection objects, print out the device's connection object itself. Additionally, pretty print the facts for each device and also print out the device's NAPALM platform type (ios, eos, et cetera).
+
+
+2. NAPALM Getters
+
+2a. Create a new file named "my_functions.py" that will store a set of reusable functions. Move the "open_napalm_connection" function from exercise1 into this Python file. Import the network devices once again from my_devices.py and create a list of connection objects (once again with connections to both cisco3 and arista1).
+
+2b. Pretty print the arp table for each of these devices. Gather this information using the appropriate NAPALM Getter.
+
+2c. Attempt to use the get_ntp_peers() method against both of the devices. Does this method work? Your code should gracefully handle any exceptions that occur. In other words, an exception that occurs due to this get_ntp_peers() method, should not cause the program to crash.
+
+2d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. Note, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
+
+
+3. NAPALM Config Merge
+
+3a. Using your existing functions and the my_devices.py file, create a NAPALM connection to both cisco3 and arista1.
+
+3b. Create two new text files `arista1.lasthop.io-loopbacks` and `cisco3.lasthop.io-loopbacks`. In each of these files, create two new loopback interfaces with a description. Your files should be similar to the following:
+
+interface loopback100
+  description loopback100
+!
+interface loopback101
+  description loopback101
+
+
+For both cisco3 and arista1, use the load_merge_candidate() method to stage the candidate configuration. In other words, use load_merge_candidate() and your loopback configuration file to stage a configuration change. Use the NAPALM compare_config() method to print out the pending differences (i.e. the differences between the running configuration and the candidate configuration).
+
+3c. Commit the pending changes to each device, and check the diff once again (after the commit_config).
+
+
+4. Replace Operations
+
+4a. Add nxos1 to your my_devices.py file. Ensure that you include the necessary information to set the NX-API port to 8443. This is done using 'optional_args' in NAPALM so you should have the following key-value pair defined:
+
+​"optional_args": {"port": 8443}
+
+
+4b. Create a new function named 'create_checkpoint'. Add this function into your my_functions.py file. This function should take one argument, the NAPALM connection object. This function should use the NAPALM _get_checkpoint_file() method to retrieve a checkpoint from the NX-OS device. It should then write this checkpoint out to a file.
+
+Recall that the NX-OS platform requires a 'checkpoint' file for configuration replace operations. Using this new function, retrieve a checkpoint from nxos1 and write it to the local file system.
+
+4c. Manually copy the saved checkpoint to a new file and add an additional loopback interface to the configuration.
+
+4d. Create a Python script that stages a complete configuration replace operation (using the checkpoint file that you just retrieved and modified). Once your candidate configuration is staged perform a compare_config (diff) on the configuration to see your pending changes. After the compare_config is complete, then use the discard_config() method to eliminate the pending changes. Next, perform an additional compare_config (diff) to verify that you have no pending configuration changes. Do not actually perform the commit_config as part of this exercise.
 
 
