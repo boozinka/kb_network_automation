@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+ 
 # Import TextFSM and Pretty Print
 import textfsm
 from pprint import pprint
