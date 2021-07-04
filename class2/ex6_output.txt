@@ -1,5 +1,4 @@
 
-
 cisco4#terminal width 511
 cisco4#terminal length 0
 cisco4#

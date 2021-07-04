@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+ 
 # ConnectHandler
 from netmiko import ConnectHandler
 from getpass import getpass
