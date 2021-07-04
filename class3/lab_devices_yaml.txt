@@ -18,3 +18,4 @@
   host: srx2.blah.blah
   password: bar
   username: foo
+

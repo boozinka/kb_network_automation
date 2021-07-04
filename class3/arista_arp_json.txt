@@ -17,4 +17,4 @@
     "notLearnedEntries": 0,
     "totalEntries": 2,
     "staticEntries": 0
-}
+} 
