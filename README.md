@@ -912,3 +912,224 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 4d. Create a Python script that stages a complete configuration replace operation (using the checkpoint file that you just retrieved and modified). Once your candidate configuration is staged perform a compare_config (diff) on the configuration to see your pending changes. After the compare_config is complete, then use the discard_config() method to eliminate the pending changes. Next, perform an additional compare_config (diff) to verify that you have no pending configuration changes. Do not actually perform the commit_config as part of this exercise.
 
 
+Class 10.
+
+- [ ] I.    Concurrency Overview
+- [ ] II.   Threads Overview
+- [ ] III.  Multiple Processes Overview
+- [ ] IV.   Threads Legacy Code
+- [ ] V.    Multiprocessing Legacy Code
+- [ ] VI.   Concurrent Futures Intro
+- [ ] VII.  Concurrent Futures as_completed
+- [ ] VIII. Concurrent Futures map
+- [ ] IX.   Concurrent Futures processes
+
+
+1a. As you have done in previous classes, create a Python file named "my_devices.py". In this file, define the connection information for: 'cisco3', 'arista1', 'arista2', and 'srx2'. This file should contain all the necessary information to create a Netmiko connection. Use getpass() for the password handling. Use a global_delay_factor of 4 for both the arista1 device and the arista2 device. This Python module should be used to store the connection information for all of the exercises in this lesson.
+
+1b. Create a Python script that executes "show version" on each of the network devices defined in my_devices.py. This script should execute serially i.e. one SSH connection after the other. Record the total execution time for the script. Print the "show version" output and the total execution time to standard output. As part of this exercise, you should create a function that both establishes a Netmiko connection and that executes a single show command that you pass in as argument. This function's arguments should be the Netmiko device dictionary and the "show-command" argument. The function should return the result from the show command.
+
+2. Create a new file named my_functions.py. Move your function from exercise1 to this file. Name this function "ssh_command". Reuse functions from this file for the rest of the exercises. Complete the same task as Exercise 1b except this time use "legacy" threads to create a solution. Launch a separate thread for each device's SSH connection. Print the time required to complete the task for all of the devices. Move all of the device specific output printing to the called function (i.e. to the child thread). 
+
+3a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. Note, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
+
+3b. Instead of waiting for all of the futures to complete, use "as_completed" to print the future results as they come available. Reuse your "ssh_command2" function to accomplish this. Once again use the concurrent futures "ThreadPoolExecutor" and print the "show version" results to standard output. Additionally, print the total execution time to standard output.
+
+4. Create a new program that completes the same task as Exercise 3b except using multiple processes (i.e. a 'ProcessPoolExecutor').
+
+5. Using a context manager and a 'ProcessPoolExecutor', complete the same task as Exercise 4.
+
+6. Using a context manager, the ProcessPoolExecutor, and the map() method, create a solution that executes "show ip arp" on all of the devices defined in my_devices.py. Note, the Juniper device will require "show arp" instead of "show ip arp" so your solution will have to properly account for this.
+
+
+Class 11.
+
+
+ - [ ] I.    REST API Introduction
+ - [ ] II.   REST API Characteristics
+ - [ ] III.  REST API Access from Browser
+ - [ ] IV.   REST API Access from Postman
+ - [ ] V.    REST API Python Get
+ - [ ] VI.   REST API Python Get with Auth
+ - [ ] VII.  REST API Python Create Object
+ - [ ] VIII. REST API Modify Objects
+ - [ ] IX.   REST API Delete
+ - [ ] X.    REST API Authentication
+ - [ ] XI.   REST API Closing Comments
+
+
+1a. Use curl with the "--insecure" option to view the NetBox top-level /api endpoint. An example of this would be: 
+
+curl -L -s https://netbox.lasthop.io/api/ --insecure
+You can also pipe this into the "jq" utility for prettier output:
+
+curl -L -s https://netbox.lasthop.io/api/ --insecure | jq
+Note, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
+
+1b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. Note, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
+
+curl -H "Authorization: Token $NETBOX_TOKEN" https://netbox.lasthop.io/api/dcim/devices/ --insecure | jq
+
+1c. Use curl to retrieve only the device information for a single device (ID=2 for example). Once again this will require authorization. The API URL for this would be (assuming ID 2):
+
+https://netbox.lasthop.io/api/dcim/devices/2/
+ 
+2a. Using the Python requests library, perform an HTTP GET on the base URL of the NetBox server (https://netbox.lasthop.io/api/). Ensure that you are not verifying the SSL certificate. Print the HTTP status code, the response text, the JSON response, and the HTTP response headers. These items can be accessed using the following attributes/methods in the Python-requests Response object:
+
+response.status_code
+response.text
+response.json()
+response.headers
+
+2b. Repeat exercise 2a, except properly construct the HTTP request headers as follows:
+
+http_headers = {}
+http_headers["accept"] = "application/json; version=2.4;"
+
+You will need to pass these HTTP headers into your HTTP GET request. Once again print the HTTP status code, the response text, the JSON response, and the HTTP response headers. 
+
+2c. Execute another HTTP GET request to retrieve all of the endpoints under the "/api/dcim" parent. Pretty print out the response.json() from this output. This should be a dictionary with the key being the next part of the URL after "/api/dcim" and the value being the full URL.
+
+3a. Retrieve a list of all the devices in NetBox. This will require authentication. As in the previous task, create your headers manually and pass them into your request. In order to perform the NetBox authentication, you should do the following:
+
+import os
+# Set the token based on the NETBOX_TOKEN environment variable
+token = os.environ["NETBOX_TOKEN"]
+
+Then add the following key to your HTTP Headers:
+
+http_headers["Authorization"] = f"Token {token}"
+
+From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". Note, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
+
+3b. Using the same device information retrieved in exercise 3a, create and print a report to standard output. This report should contain the location, manufacturer, and status for each device. Your output should look similar to the following:
+
+------------------------------------------------------------
+arista1
+----------
+Location: Fremont Data Center
+Vendor: Arista
+Status: Active
+------------------------------------------------------------
+
+
+------------------------------------------------------------
+arista2
+----------
+Location: Fremont Data Center
+Vendor: Arista
+Status: Active
+------------------------------------------------------------
+
+...   # remaining devices
+
+4a. Using an HTTP POST and the Python-requests library, create a new IP address in NetBox. This IP address object should be a /32 from the 192.0.2.0/24 documentation block. Print out the status code and the returned JSON.
+The HTTP headers for this request should look as follows:
+
+http_headers = {}
+http_headers["Content-Type"] = "application/json; version=2.4;"
+http_headers["accept"] = "application/json; version=2.4;"
+http_headers["Authorization"] = f"Token {token}"
+
+The URL for the HTTP POST is:
+
+https://netbox.lasthop.io/api/ipam/ip-addresses/
+
+The JSON payload data for this request should be similar to the following:
+
+data = {"address": "192.0.2.100/32"}
+
+4b. Using the response data from the HTTP POST that created the IP address entry in exercise 4a, capture the "id" of the newly created IP address object. Using this ID, construct a new URL. Use this new URL and the HTTP GET method to retrieve only the API information specific to this IP address. Your IP address URL should be of the following form:
+
+https://netbox.lasthop.io/api/ipam/ip-addresses/{address_id}/
+
+where {address_id} is the ID of the object that you just created.
+
+Pretty print the response.json() data from this HTTP GET. Please note the ID of the address object that you just created.
+
+5. Building on the script from exercise 4, add a description to the the IP address object that you just created. Accomplish this using an HTTP PUT. The HTTP PUT operation will require all of the mandatory fields in the object (in this case, the "address" field). Print the status code and the response.json() from your PUT operation. The HTTP PUT operation will use same URL as exercise 4b (i.e. the URL of the newly created IP address object including its ID).
+
+6. Use an HTTP DELETE and Python-requests to delete the IP address object that you just created. Remember to reference the ID of your object.
+
+
+Class 12.
+
+
+ - [ ] I.    Python Code Style
+ - [ ] II.   Pylint
+ - [ ] III.  pycodestyle
+ - [ ] IV.   Pylama
+ - [ ] V.    Black
+ - [ ] VI.   pytest Introduction
+ - [ ] VII.  pytest Basics (Part1)
+ - [ ] VIII. pytest Basics (Part2)
+ - [ ] IX.   pytest Netmiko Example
+ - [ ] X.    pytest Fixtures
+ - [ ] XI.   pytest Fixtures Teardown
+ - [ ] XII.  pytest conftest.py
+ - [ ] XIII. tox
+ - [ ] XIV.  CI-CD Introduction
+ - [ ] XV.   Travis-CI Integration
+
+
+1. Pylint, pycodestyle, and Pylama Intro
+
+1a. Copy the "fixme_orig.py" and the "my_devices.py" files from this week's course repository. Execute this "fixme_orig.py" code. It should successfully run and should print out NAPALM device facts. While the code is functional, there are some Python-style issues it.
+
+1b. Run pylint against this "fixme_orig.py" file. Create a copy of fixme_orig.py; name the new file fixme_pylint.py. Fix all of the Pylint errors that are in this fixme_pylint.py file.
+
+1c. Run pycodestyle against "fixme_orig.py". Create a copy of fixme_orig.py; name the new file fixme_pep8.py. Fix all of the pycodestyle errors that are in this fixme_pep8.py file.
+
+1d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. Note that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
+
+2. Black
+
+2a. Copy the original "fixme_orig.py" file to a new file named "fixme_black.py". Run Black against this file in "diff" mode i.e. with the "--diff" flag to show the changes that Black *would* make to this file.
+
+2b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. Note, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
+
+3. pytest Introduction
+
+3a. Create a new directory named "test_ex3". In this directory, create a file named "test_simple.py". In this file, write two simple functions "my_add" and "my_mul" which add two values together and multiply two values together respectively (and then return these values).
+
+3b. Create two test functions "test_my_add" and "test_my_mul". These test functions should assert that the appropriate values are returned by "my_add" and "my_mul". Run your tests using "py.test -s -v test_simple.py".
+
+3c. Modify one of your assert statements to intentionally cause py.test to fail. Execute "py.test" again and view the failed test.
+
+3d. Fix the assert statement that you intentionally broke in the previous step. Verify your tests now all pass successfully.
+
+4. pytest and Fixtures
+
+4a. Create a new file named "test_netmiko.py". In this file, create a simple function that connects to arista1.lasthop.io and returns the Netmiko connection object. 
+
+4b. Add a test into "test_netmiko.py" where you verify the Netmiko find_prompt() method works properly. This test should use the Netmiko connection function that you created in Exercise 4a.
+
+4c. Create a second test function named "test_show_version" where you verify the EOS software version (currently the software version value is "4.20.10M", but this is subject to change in the future). Verify both of your tests from Exercise 4b and 4c pass properly using "py.test -s -v".
+
+4d. Copy your "test_netmiko.py" file into a file named "test_netmiko_fixture.py". Now refactor your new "test_netmiko_fixture.py" file. This new module should be the same as what you had in Exercise 4c except that you should make the Netmiko connection function a pytest fixture (with a scope of "module"). Additionally, you should use this fixture for both of your test functions. Execute both of your tests in "test_netmiko_fixture.py" and verify they pass properly using "py.test -s -v test_netmiko_fixture.py".
+
+5. pytest conftest.py
+
+5a. In a new directory named test_ex5, create a file named "conftest.py". In this file, copy the Netmiko connection function that you used as a fixture in the previous exercise.
+
+5b. In a second file named "test_netmiko_conftest.py", re-create the same two test functions used in exercise4 (test_prompt, and test_show_version). Ensure those test functions are using the fixture from conftest.py. Execute "py.test -s -v" in this directory and verify your tests pass properly.
+
+5c. Add a finalizer to your fixture such that Netmiko gracefully closes the SSH session at the end of all your tests. Verify all of your tests still pass using "py.test -s -v".
+
+6. [Optional] Integrating Travis-CI to your PyPlus Course Repository
+
+Disclaimer: please ensure that the below is appropriate for your GitHub account since you will be giving Travis-CI access into that account.
+
+6a. In GitHub, create a fork of the "pyplus_course" repository (https://github.com/ktbyers/pyplus_course).
+
+6b. Go to Travis-CI (https://travis-ci.com), in the top right corner, click "Sign in with GitHub". Follow the prompts to authorize your account. Once completed, click the "Activate" button on your user Dashboard/Repositories page.
+
+6c. Select ONLY the forked "pyplus_course" repository and click "Approve & Install".
+
+6d. Clone the "pyplus_course" repository that you forked earlier into your account on the AWS lab system. Edit the README.md to include some additional text. Commit this change, and then push this change back into GitHub (reminder, you should now be working on your fork of this 'pyplus_course' repository; consequently, you should be pushing the change back to your fork).
+
+6e. In the Travis-CI dashboard, you should now see a process starting or running. This build is executing commands that it has discovered in the ".travis.yml" file. If all goes well you should see the results of the build shortly.
+
+6f. If you want to intentionally create a failure in Travis-CI, then add a file named "my_test.py" to the base of the pyplus_course repository. In this file, ensure there is a pycodestyle or black issue. For example, add a=22 with no spaces around the equals sign. Commit this file using Git. Push this file back into your pyplus_course repository. Travis-CI should now fail as both the 'pylama .' check and the 'black --check .' will fail.
+
+
