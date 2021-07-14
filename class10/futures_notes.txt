@@ -1,0 +1,13 @@
+future_list: This is a list of future objects (i.e. Python objects that deal with threading or multiprocessing)
+
+future_list.result(): A method that gives you whatever was returned from the future object.
+
+future_list hasn't changed here i.e. it is a list of future objects.
+
+future_list.result() can and will change if you change what is returned from the function that is being called. In my reference code this is a two-element tuple. But I could return a dictionary or I could return a string or I could return something else.
+
+The wait() call is operating on the future object--it is saying wait until all of the futures are done (in this case all of the threads have completed their work). At that point in time, all of the future objects should all have something they returned.
+
+Yep, it sounds like you got it...yes, the call to pool.submit returns a future object (i.e. I think of it as a Python object that manages this concurrency and will eventually give me a result).
+
+And then it is the result() call on the completed "future" that gives me the actual result that was returned.
