@@ -31,4 +31,4 @@ for interface in data:
     intf_list.append(intf_dict)
 
 pprint(intf_list)
-
+ 
