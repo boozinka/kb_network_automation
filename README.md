@@ -1,9 +1,8 @@
-# kb_network_automation
-Following Kirk Byers Python Network Automation Course
+#Following Kirk Byers Python Network Automation Course
 
 This course dives into Python as applied to Network Engineering.
 
-### Topics covered include:
+#### Topics covered include:
 
 - [ ] Git
 - [ ] Netmiko
