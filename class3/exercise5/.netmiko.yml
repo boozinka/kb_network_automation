@@ -1,0 +1,79 @@
+---
+cisco3:
+  device_type: cisco_ios
+  host: cisco3.blah.blah
+  username: fred
+  password: somepassword
+
+cisco4:
+  device_type: cisco_ios
+  host: cisco4.blah.blah
+  username: fred
+  password: somepassword
+
+arista1:
+  device_type: arista_eos
+  host: arista1.blah.blah
+  username: fred
+  password: somepassword
+  global_delay_factor: 1
+
+arista2:
+  device_type: arista_eos
+  host: arista2.blah.blah
+  username: fred
+  password: somepassword
+  global_delay_factor: 1
+
+arista3:
+  device_type: arista_eos
+  host: arista3.blah.blah
+  username: fred
+  password: somepassword
+  global_delay_factor: 1
+
+arista4:
+  device_type: arista_eos
+  host: arista4.blah.blah
+  username: fred
+  password: somepassword
+  global_delay_factor: 1
+
+srx2:
+  device_type: juniper_junos
+  host: srx2.blah.blah
+  username: fred
+  password: somepassword
+
+nxos1:
+  device_type: cisco_nxos
+  host: nxos1.blah.blah
+  username: fred
+  password: somepassword
+  port: 22
+
+nxos2:
+  device_type: cisco_nxos
+  host: nxos2.blah.blah
+  username: fred
+  password: somepassword
+  port: 22
+
+
+cisco:
+  - cisco3
+  - cisco4
+
+arista:
+  - arista1
+  - arista2
+  - arista3
+  - arista4
+
+juniper:
+  - srx2
+
+nxos:
+  - nxos1
+  - nxos2
+
