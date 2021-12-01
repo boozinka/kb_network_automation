@@ -8,11 +8,11 @@ from pprint import pprint
 intf_list = []
 
 # Open the template file
-template_file = 'ex2_show_int_status.tpl'
+template_file = 'ex4_7_show_int_status.tpl'
 template = open(template_file)
 
 # Read the output string in (config)
-with open('ex1_show_int_status.txt') as f:
+with open('show_int_status.txt') as f:
     raw_text_data = f.read()
 
 # Parse the output string
