@@ -1,0 +1,5 @@
+Use the following command line to execute a TextFSM template.
+
+$ textfsm.py ex1_show_int_status.tpl ex1_show_int_status.txt
+
+
