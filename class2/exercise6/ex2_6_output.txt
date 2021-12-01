@@ -1,0 +1,21 @@
+
+cisco4#terminal width 511
+cisco4#terminal length 0
+cisco4#
+cisco4#
+cisco4#
+cisco4#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+cisco4(config)#
+cisco4(config)#
+cisco4(config)#
+cisco4(config)#end
+cisco4#
+cisco4#disable
+cisco4>
+cisco4>enable
+Password: 
+cisco4#
+cisco4#
+cisco4#
+cisco4#exit
