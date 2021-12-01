@@ -25,3 +25,4 @@ EOF
 #nxos2.twb-tech.com                Eth2/3              120          BR          Eth2/3      
 #nxos2.twb-tech.com                Eth2/4              120          BR          Eth2/4      
 #Total entries displayed: 4
+
