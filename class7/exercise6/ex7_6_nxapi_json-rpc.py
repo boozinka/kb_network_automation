@@ -29,4 +29,4 @@ intf = output['interface']
 state = output['state']
 mtu = output['eth_mtu']
 print(f"\nInterface: {intf}; State: {state}; MTU: {mtu}\n")
-
+ 
