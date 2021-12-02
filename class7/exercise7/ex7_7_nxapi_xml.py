@@ -72,6 +72,3 @@ for xml_return in output_config:
     input('\nHit enter to continue: ')
 print()
 
-
-
-
