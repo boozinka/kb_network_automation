@@ -62,4 +62,3 @@ for device_name, device_attr in my_devices.items():
     print(result)
     print()
 
-
