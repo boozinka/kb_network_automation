@@ -128,4 +128,4 @@ cfg = open_device(jnpr_dev)
 
 # Call function to delete the static routes configured in Exercise 4c
 remove_routes(cfg, commit_msg)
-
+ 
