@@ -11,3 +11,4 @@ The wait() call is operating on the future object--it is saying wait until all o
 Yep, it sounds like you got it...yes, the call to pool.submit returns a future object (i.e. I think of it as a Python object that manages this concurrency and will eventually give me a result).
 
 And then it is the result() call on the completed "future" that gives me the actual result that was returned.
+
