@@ -22,3 +22,4 @@ jnpr_dev.open()
 intf_xml = jnpr_dev.rpc.get_interface_information(interface_name='fe-0/0/7',
            terse=True, normalize=True)
 print(etree.tostring(intf_xml,pretty_print=True, encoding='unicode'))
+
