@@ -32,4 +32,4 @@ def arp_out(arp_list):
                 print(f"{ip_addr: >17}{' --> ': ^5}{mac_addr: >16}")
             print()
         print()
-
+ 
