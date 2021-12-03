@@ -777,93 +777,93 @@ $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt
 
 1. PyEZ basic connection and facts:
 
-1a. Create a PyEZ Device object from the jnpr.junos Device class. This device object should connect to "srx2.lasthop.io". Use getpass() to enter the device's password. Pretty print all of the device's facts. Additionally, retrieve and print only the "hostname" fact.
-
+   a. Create a PyEZ Device object from the jnpr.junos Device class. This device object should connect to "srx2.lasthop.io". Use getpass() to enter the device's password. Pretty print all of the device's facts. Additionally, retrieve and print only the "hostname" fact.
 
 2. PyEZ Tables/Views:
 
-2a. Create a Python module named jnpr_devices.py. This Python module should contain a dictionary named "srx2". This "srx2" dictionary should contain all of the key-value pairs needed to establish a PyEZ connection. You should use getpass() for the password handling. You should import this "srx2" device definition for all of the remaining exercises in class8.
+   a. Create a Python module named jnpr_devices.py. This Python module should contain a dictionary named "srx2". This "srx2" dictionary should contain all of the key-value pairs needed to establish a PyEZ connection. You should use getpass() for the password handling. You should import this "srx2" device definition for all of the remaining exercises in class8.
 
-2b. Create a Python program that creates a PyEZ Device connection to "srx2" (using the previously created Python module). Using this PyEZ connection and the RouteTable and ArpTable views retrieve the routing table and the arp table for srx2.
+   b. Create a Python program that creates a PyEZ Device connection to "srx2" (using the previously created Python module). Using this PyEZ connection and the RouteTable and ArpTable views retrieve the routing table and the arp table for srx2.
 
-This program should have four separate functions:
-1. check_connected() - Verify that your NETCONF connection is working. You can use the .connected attribute to check the status of this connection.
-2. gather_routes() - Return the routing table from the device.
-3. gather_arp_table() - Return the ARP table from the device.
-4. print_output() - A function that takes the Juniper PyEZ Device object, the routing table, and the ARP table and then prints out the: hostname, NETCONF port, username, routing table, ARP table
+   This program should have four separate functions:
 
-This program should be structured such that all of the four functions could be reused in other class8 exercises.
+   a. check_connected() - Verify that your NETCONF connection is working. You can use the .connected attribute to check the status of this connection.
+ 
+   b. gather_routes() - Return the routing table from the device.
 
+   c. gather_arp_table() - Return the ARP table from the device.
+
+   d. print_output() - A function that takes the Juniper PyEZ Device object, the routing table, and the ARP table and then prints out the: hostname, NETCONF port, username, routing table, ARP table
+
+   This program should be structured such that all of the four functions could be reused in other class8 exercises.
 
 3. PyEZ configuration operations (Part 1):
 
-3a. Open a connection to the srx2 device and acquire a configuration lock. Validate that the configuration session is indeed locked by SSH'ing into the device and attempting to enter configuration mode ("configure"). Reuse, the 'srx2' device definition from the jnpr_devices.py file that you created in exercise2.
+   a. Open a connection to the srx2 device and acquire a configuration lock. Validate that the configuration session is indeed locked by SSH'ing into the device and attempting to enter configuration mode ("configure"). Reuse, the 'srx2' device definition from the jnpr_devices.py file that you created in exercise2.
 
-You should receive a prompt similar to the following: 
+   You should receive a prompt similar to the following: 
 
-pyclass@srx2> configure
-Entering configuration mode
-Users currently editing the configuration:
-  pyclass (pid 30316) on since 2019-03-08 18:30:51 PST
-      exclusive
+       pyclass@srx2> configure
+       Entering configuration mode
+       Users currently editing the configuration:
+         pyclass (pid 30316) on since 2019-03-08 18:30:51 PST
+             exclusive
 
-Add code to attempt to lock the configuration again. Gracefully handle the "LockError" exception (meaning the configuration is already locked).
+   Add code to attempt to lock the configuration again. Gracefully handle the "LockError" exception (meaning the configuration is already locked).
 
-3b. Use the "load" method to stage a configuration using a basic set command, for example, "set system host-name python4life".
+   b. Use the "load" method to stage a configuration using a basic set command, for example, "set system host-name python4life".
 
-3c. Print the diff of the current configuration with the staged configuration. Your output should look similar to the following: 
+   c. Print the diff of the current configuration with the staged configuration. Your output should look similar to the following: 
 
-[edit system]
--  host-name srx2;
-+  host-name python4life;
+       [edit system]
+       -  host-name srx2;
+       +  host-name python4life;
 
-3d. Rollback the staged configuration. Once again, print out the diff of the staged and the current configuration (which at this point should be None).
-
+   d. Rollback the staged configuration. Once again, print out the diff of the staged and the current configuration (which at this point should be None).
 
 4. PYeZ configuration operations (Part 2):
 
-4a. Using the previously created jnpr_devices.py file, open a connection to srx2 and gather the current routing table information.
+   a. Using the previously created jnpr_devices.py file, open a connection to srx2 and gather the current routing table information.
 
-4b. Using PyEZ stage a configuration from a file. The file should be "conf" notation. This configuration should add two static host routes (routed to discard). These routes should be from the RFC documentation range of 203.0.113.0/24 (picking any /32 in that range should be fine). Use "merge=True" for this configuration. For example: 
+   b. Using PyEZ stage a configuration from a file. The file should be "conf" notation. This configuration should add two static host routes (routed to discard). These routes should be from the RFC documentation range of 203.0.113.0/24 (picking any /32 in that range should be fine). Use "merge=True" for this configuration. For example: 
 
-routing-options {
-    static {
-        route 203.0.113.5/32 discard;
-        route 203.0.113.200/32 discard;
-    }
-}
+       routing-options {
+           static {
+               route 203.0.113.5/32 discard;
+               route 203.0.113.200/32 discard;
+           }
+       }
 
-4c. Reusing your gather_routes() function from exercise2, retrieve the routing table before and after you configuration change. Print out the differences in the routing table (before and after the change). To simplify the problem, you can assume that the only change will be *additional* routes added by your script.
+   c. Reusing your gather_routes() function from exercise2, retrieve the routing table before and after you configuration change. Print out the differences in the routing table (before and after the change). To simplify the problem, you can assume that the only change will be *additional* routes added by your script.
 
-4d. Using PyEZ delete the static routes that you just added. You can use either load() and set operations or load() plus a configuration file to accomplish this.
-
+   d. Using PyEZ delete the static routes that you just added. You can use either load() and set operations or load() plus a configuration file to accomplish this.
 
 5. PYeZ using direct RPC:
 
-5a. Connect to the srx2 device. Using an RPC call, gather and pretty-print the "show version" information. Recall that you can retrieve RPC method name by running "show version | display xml rpc" argument. Also don't forget to convert the hyphens to underscores. Your output should match the following: 
+   a. Connect to the srx2 device. Using an RPC call, gather and pretty-print the "show version" information. Recall that you can retrieve RPC method name by running "show version | display xml rpc" argument. Also don't forget to convert the hyphens to underscores. Your output should match the following: 
 
-<software-information>
-<host-name>srx2</host-name>
-<product-model>srx110h2-va</product-model>
-<product-name>srx110h2-va</product-name>
-<jsr/>
-<package-information>
-<name>junos</name>
-<comment>JUNOS Software Release [12.1X46-D35.1]</comment>
-</package-information>
-</software-information>
+       <software-information>
+       <host-name>srx2</host-name>
+       <product-model>srx110h2-va</product-model>
+       <product-name>srx110h2-va</product-name>
+       <jsr/>
+       <package-information>
+       <name>junos</name>
+       <comment>JUNOS Software Release [12.1X46-D35.1]</comment>
+       </package-information>
+       </software-information>
 
-5b. Using a direct RPC call, gather the output of "show interfaces terse". Print the output to standard out.
+   b. Using a direct RPC call, gather the output of "show interfaces terse". Print the output to standard out.
 
-5c. Modify the previous task to capture "show interface terse", but this time only for "fe-0/0/7". Print the output to standard out. Use normalize=True in the RPC method call to make the output more readable. You will also need to add pretty_print=True to the etree.tostring() call. Consequently, your code should be similar to the following: 
+   c. Modify the previous task to capture "show interface terse", but this time only for "fe-0/0/7". Print the output to standard out. Use normalize=True in the RPC method call to make the output more readable. You will also need to add pretty_print=True to the etree.tostring() call. Consequently, your code should be similar to the following: 
 
-xml_out = dev.rpc.get_interface_information(interface_name="fe-0/0/7", terse=True, normalize=True)
-print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
+       xml_out = dev.rpc.get_interface_information(interface_name="fe-0/0/7", terse=True, normalize=True)
+       print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
 
 
 -----------------------------------------------------------------------------------------
 
-### Class 9.
+### Class 9. NAPALM
 
  - [ ] I.   NAPALM Overview​
  - [ ] II.  NAPALM - Simple Connection​
@@ -871,66 +871,63 @@ print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
  - [ ] IV.  NAPALM - Configuration Merge
  - [ ] V.   NAPALM - Configuration Replace
  
- 
- 1. Simple NAPALM Connections and Facts
+### Exercises: 
 
-1a. Create a Python file named "my_devices.py" that defines the NAPALM connection information for both the 'cisco3' device and the 'arista1' device. Use getpass() for the password handling. This Python module should be used to store the device connection information for all of the exercises in this lesson.
+1. Simple NAPALM Connections and Facts
 
-1b. Create a simple function that accepts the NAPALM device information from the my_devices.py file and creates a NAPALM connection object. This function should open the NAPALM connection to the device and should return the NAPALM connection object.
+   a. Create a Python file named "my_devices.py" that defines the NAPALM connection information for both the 'cisco3' device and the 'arista1' device. Use getpass() for the password handling. This Python module should be used to store the device connection information for all of the exercises in this lesson.
 
-1c. Using your "my_devices.py" file and your NAPALM connection function, create a list of NAPALM connection objects to 'cisco3' and 'arista1'.
+   b. Create a simple function that accepts the NAPALM device information from the my_devices.py file and creates a NAPALM connection object. This function should open the NAPALM connection to the device and should return the NAPALM connection object.
 
-1d. Iterate through the connection objects, print out the device's connection object itself. Additionally, pretty print the facts for each device and also print out the device's NAPALM platform type (ios, eos, et cetera).
+   c. Using your "my_devices.py" file and your NAPALM connection function, create a list of NAPALM connection objects to 'cisco3' and 'arista1'.
 
+   d. Iterate through the connection objects, print out the device's connection object itself. Additionally, pretty print the facts for each device and also print out the device's NAPALM platform type (ios, eos, et cetera).
 
 2. NAPALM Getters
 
-2a. Create a new file named "my_functions.py" that will store a set of reusable functions. Move the "open_napalm_connection" function from exercise1 into this Python file. Import the network devices once again from my_devices.py and create a list of connection objects (once again with connections to both cisco3 and arista1).
+   a. Create a new file named "my_functions.py" that will store a set of reusable functions. Move the "open_napalm_connection" function from exercise1 into this Python file. Import the network devices once again from my_devices.py and create a list of connection objects (once again with connections to both cisco3 and arista1).
 
-2b. Pretty print the arp table for each of these devices. Gather this information using the appropriate NAPALM Getter.
+   b. Pretty print the arp table for each of these devices. Gather this information using the appropriate NAPALM Getter.
 
-2c. Attempt to use the get_ntp_peers() method against both of the devices. Does this method work? Your code should gracefully handle any exceptions that occur. In other words, an exception that occurs due to this get_ntp_peers() method, should not cause the program to crash.
+   c. Attempt to use the get_ntp_peers() method against both of the devices. Does this method work? Your code should gracefully handle any exceptions that occur. In other words, an exception that occurs due to this get_ntp_peers() method, should not cause the program to crash.
 
-2d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. ***Note***, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
+   d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. ***Note***, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
 
 
 3. NAPALM Config Merge
 
-3a. Using your existing functions and the my_devices.py file, create a NAPALM connection to both cisco3 and arista1.
+   a. Using your existing functions and the my_devices.py file, create a NAPALM connection to both cisco3 and arista1.
 
-3b. Create two new text files `arista1.lasthop.io-loopbacks` and `cisco3.lasthop.io-loopbacks`. In each of these files, create two new loopback interfaces with a description. Your files should be similar to the following:
+   b. Create two new text files `arista1.lasthop.io-loopbacks` and `cisco3.lasthop.io-loopbacks`. In each of these files, create two new loopback interfaces with a description. Your files should be similar to the following:
 
-interface loopback100
-  description loopback100
-!
-interface loopback101
-  description loopback101
+       interface loopback100
+         description loopback100
+       !
+       interface loopback101
+         description loopback101
 
+   For both cisco3 and arista1, use the load_merge_candidate() method to stage the candidate configuration. In other words, use load_merge_candidate() and your loopback configuration file to stage a configuration change. Use the NAPALM compare_config() method to print out the pending differences (i.e. the differences between the running configuration and the candidate configuration).
 
-For both cisco3 and arista1, use the load_merge_candidate() method to stage the candidate configuration. In other words, use load_merge_candidate() and your loopback configuration file to stage a configuration change. Use the NAPALM compare_config() method to print out the pending differences (i.e. the differences between the running configuration and the candidate configuration).
-
-3c. Commit the pending changes to each device, and check the diff once again (after the commit_config).
-
+   c. Commit the pending changes to each device, and check the diff once again (after the commit_config).
 
 4. Replace Operations
 
-4a. Add nxos1 to your my_devices.py file. Ensure that you include the necessary information to set the NX-API port to 8443. This is done using 'optional_args' in NAPALM so you should have the following key-value pair defined:
+   a. Add nxos1 to your my_devices.py file. Ensure that you include the necessary information to set the NX-API port to 8443. This is done using 'optional_args' in NAPALM so you should have the following key-value pair defined:
 
-​"optional_args": {"port": 8443}
+       "optional_args": {"port": 8443}
 
+   b. Create a new function named 'create_checkpoint'. Add this function into your my_functions.py file. This function should take one argument, the NAPALM connection object. This function should use the NAPALM _get_checkpoint_file() method to retrieve a checkpoint from the NX-OS device. It should then write this checkpoint out to a file.
 
-4b. Create a new function named 'create_checkpoint'. Add this function into your my_functions.py file. This function should take one argument, the NAPALM connection object. This function should use the NAPALM _get_checkpoint_file() method to retrieve a checkpoint from the NX-OS device. It should then write this checkpoint out to a file.
+   Recall that the NX-OS platform requires a 'checkpoint' file for configuration replace operations. Using this new function, retrieve a checkpoint from nxos1 and write it to the local file system.
 
-Recall that the NX-OS platform requires a 'checkpoint' file for configuration replace operations. Using this new function, retrieve a checkpoint from nxos1 and write it to the local file system.
+   c. Manually copy the saved checkpoint to a new file and add an additional loopback interface to the configuration.
 
-4c. Manually copy the saved checkpoint to a new file and add an additional loopback interface to the configuration.
-
-4d. Create a Python script that stages a complete configuration replace operation (using the checkpoint file that you just retrieved and modified). Once your candidate configuration is staged perform a compare_config (diff) on the configuration to see your pending changes. After the compare_config is complete, then use the discard_config() method to eliminate the pending changes. Next, perform an additional compare_config (diff) to verify that you have no pending configuration changes. Do not actually perform the commit_config as part of this exercise.
+   d. Create a Python script that stages a complete configuration replace operation (using the checkpoint file that you just retrieved and modified). Once your candidate configuration is staged perform a compare_config (diff) on the configuration to see your pending changes. After the compare_config is complete, then use the discard_config() method to eliminate the pending changes. Next, perform an additional compare_config (diff) to verify that you have no pending configuration changes. Do not actually perform the commit_config as part of this exercise.
 
 
 -----------------------------------------------------------------------------------------
 
-### Class 10.
+### Class 10. SSH and Concurrecy
 
 - [ ] I.    Concurrency Overview
 - [ ] II.   Threads Overview
@@ -942,6 +939,7 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 - [ ] VIII. Concurrent Futures map
 - [ ] IX.   Concurrent Futures processes
 
+### Exercises:
 
 1a. As you have done in previous classes, create a Python file named "my_devices.py". In this file, define the connection information for: 'cisco3', 'arista1', 'arista2', and 'srx2'. This file should contain all the necessary information to create a Netmiko connection. Use getpass() for the password handling. Use a global_delay_factor of 4 for both the arista1 device and the arista2 device. This Python module should be used to store the connection information for all of the exercises in this lesson.
 
