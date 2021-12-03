@@ -119,7 +119,7 @@ This course dives into Python as applied to Network Engineering.
         [main e87901a] Fixing merge conflict
 
 
-## Netmiko Exercises:
+### Netmiko Exercises:
 
 1. In the lab environment use Netmiko to connect to one of the Cisco NX-OS devices. You can find the IP addresses and username/passwords of the Cisco devices in the 'Lab Environment' email or alternatively in the ~/.netmiko.yml file. Simply print the router prompt back from this device to verify you are connecting to the device properly.
 
@@ -141,45 +141,46 @@ This course dives into Python as applied to Network Engineering.
 - [ ] VII.  Netmiko Misc Topics  
 
 
+### Exercises:
+
 1. Use the extended 'ping' command and Netmiko on the 'cisco4' router. This should prompt you for additional information as follows:
 
-cisco4#ping
-Protocol [ip]: 
-Target IP address: 8.8.8.8
-Repeat count [5]: 
-Datagram size [100]: 
-Timeout in seconds [2]: 
-Extended commands [n]: 
-Sweep range of sizes [n]: 
-Type escape sequence to abort.
-Sending 5, 100-byte ICMP Echos to 8.8.8.8, timeout is 2 seconds:
-!!!!!
-Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/4 ms
+       cisco4#ping
+       Protocol [ip]: 
+       Target IP address: 8.8.8.8
+       Repeat count [5]: 
+       Datagram size [100]: 
+       Timeout in seconds [2]: 
+       Extended commands [n]: 
+       Sweep range of sizes [n]: 
+       Type escape sequence to abort.
+       Sending 5, 100-byte ICMP Echos to 8.8.8.8, timeout is 2 seconds:
+       !!!!!
+       Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/4 ms
 
-a. Use send_command_timing() to handle the additional prompting from this 'ping' command. Specify a target IP address of '8.8.8.8'
+    a. Use send_command_timing() to handle the additional prompting from this 'ping' command. Specify a target IP address of '8.8.8.8'
 
-b. Use send_command() and the expect_string argument to handle the additional prompting. Once again specify a target IP address of '8.8.8.8'.
-
+    b. Use send_command() and the expect_string argument to handle the additional prompting. Once again specify a target IP address of '8.8.8.8'.
 
 2. Create a Netmiko connection to the 'nxos2' device using a global_delay_factor of 2. Execute 'show lldp neighbors detail' and print the returned output to standard output. Execute 'show lldp neighbors detail' a second time using send_command() with a delay_factor of 8. Print the output of this command to standard output. Use the Python datetime library to record the execution time of both of these commands. Print these execution times to standard output.
 
 
 3. On your AWS lab server, look at the ntc-templates index file (at ~/ntc-templates/templates/index). Look at some of the commands available for cisco_ios (you can use 'cat ~/ntc-templates/templates/index | grep cisco_ios' to see this). Also look at some of the abbreviated forms of Cisco IOS commands that are supported in the index file.
 
-Create a script using Netmiko that executes 'show version' and 'show lldp neighbors' against the Cisco4 device with use_textfsm=True.
+   Create a script using Netmiko that executes 'show version' and 'show lldp neighbors' against the Cisco4 device with use_textfsm=True.
 
-What is the outermost data structure that is returned from 'show lldp neighbors' (dictionary, list, string, something else)? The Cisco4 device should only have one LLDP entry (the HPE switch that this router connects to). From this LLDP data, print out the remote device's interface. In other words, print out the port number on the HPE switch that Cisco4 connects into.
+   What is the outermost data structure that is returned from 'show lldp neighbors' (dictionary, list, string, something else)? The Cisco4 device should only have one LLDP entry (the HPE switch that this router connects to). From this LLDP data, print out the remote device's interface. In other words, print out the port number on the HPE switch that Cisco4 connects into.
 
 
 4. Use Netmiko and the send_config_set() method to configure the following on the Cisco3 router.
 
-ip name-server 1.1.1.1
-ip name-server 1.0.0.1
-ip domain-lookup
+       ip name-server 1.1.1.1
+       ip name-server 1.0.0.1
+       ip domain-lookup
 
-Experiment with fast_cli=True to see how long the script takes to execute (with and without this option enabled).
+   Experiment with fast_cli=True to see how long the script takes to execute (with and without this option enabled).
 
-Verify DNS lookups on the router are now working by executing 'ping google.com'. Verify from this that you receive a ping response back.
+   Verify DNS lookups on the router are now working by executing 'ping google.com'. Verify from this that you receive a ping response back.
 
 
 5. On both the NXOS1 and NXOS2 switches configure five VLANs including VLAN names (just pick 5 VLAN numbers between 100 - 999). Use Netmiko's send_config_from_file() method to accomplish this. Also use Netmiko's save_config() method to save the changes to the startup-config.
@@ -187,34 +188,34 @@ Verify DNS lookups on the router are now working by executing 'ping google.com'.
 
 6. Using SSH and netmiko connect to the Cisco4 router. In your device definition, specify both an 'secret' and a 'session_log'. Your device definition should look as follows: 
 
-password = getpass()
-device = {
-    "host": "cisco4.blah.net",
-    "username": "fred",
-    "password": somepassword,
-    "secret": password,
-    "device_type": "cisco_ios",
-    "session_log": "my_output.txt",
-}
+       password = getpass()
+       device = {
+           "host": "cisco4.blah.net",
+           "username": "fred",
+           "password": somepassword,
+           "secret": password,
+           "device_type": "cisco_ios",
+           "session_log": "my_output.txt",
+       }
 
-Execute the following sequence of events using Netmiko:
+   Execute the following sequence of events using Netmiko:
 
-a. Print the current prompt using find_prompt()
+   a. Print the current prompt using find_prompt()
 
-b. Execute the config_mode() method and print the new prompt using find_prompt()
+   b. Execute the config_mode() method and print the new prompt using find_prompt()
 
-c. Execute the exit_config_mode() method and print the new prompt using find_prompt()
+   c. Execute the exit_config_mode() method and print the new prompt using find_prompt()
 
-d. Use the write_channel() method to send the 'disable' command down the SSH channel. Note, write_channel is a low level method so it requires that you add a newline to the end of your 'disable' command.
+   d. Use the write_channel() method to send the 'disable' command down the SSH channel. ***Note, write_channel is a low level method so it requires that you add a newline to the end of your 'disable' command.
 
-e. time.sleep for two seconds and then use the read_channel() method to read the data that is currently available on the SSH channel. Print this to the screen.
+   e. time.sleep for two seconds and then use the read_channel() method to read the data that is currently available on the SSH channel. Print this to the screen.
 
-f. Execute the enable() method and print your now current prompt using find_prompt(). The enable() method will use the 'secret' defined in your device definition. This 'secret' is the same as the standard lab password.
+   f. Execute the enable() method and print your now current prompt using find_prompt(). The enable() method will use the 'secret' defined in your device definition. This 'secret' is the same as the standard lab password.
 
-g. After you are done executing your script, look at the 'my_output.txt' file to see what is included in the session_log.
+   g. After you are done executing your script, look at the 'my_output.txt' file to see what is included in the session_log.
 
 
-Notes: both the send_config_set() and send_config_from_file() methods automatically enter and exit config mode; consequently, you don't typically need to control this yourself. The write_channel() and read_channel() methods can be useful if you need to make a custom solution to write/read the SSH channel in some way. The session_log can be very helpful for debugging Netmiko issues to see what occurred during the SSH session.
+   ***Notes: both the send_config_set() and send_config_from_file() methods automatically enter and exit config mode; consequently, you don't typically need to control this yourself. The write_channel() and read_channel() methods can be useful if you need to make a custom solution to write/read the SSH channel in some way. The session_log can be very helpful for debugging Netmiko issues to see what occurred during the SSH session.
 
 
 -----------------------------------------------------------------------------------------
@@ -231,141 +232,146 @@ Notes: both the send_config_set() and send_config_from_file() methods automatica
 - [ ] VIII. CiscoConfParse  (Part3)    
 
 
+### Exercises:
+
 1. Using the below ARP data, create a five element list. Each list element should be a dictionary with the following keys: "mac_addr", "ip_addr", "interface". At the end of this process, you should have five dictionaries contained inside a single list. 
 
-Protocol  Address      Age  Hardware Addr   Type  Interface
-Internet  10.220.88.1   67  0062.ec29.70fe  ARPA  Gi0/0/0
-Internet  10.220.88.20  29  c89c.1dea.0eb6  ARPA  Gi0/0/0
-Internet  10.220.88.22   -  a093.5141.b780  ARPA  Gi0/0/0
-Internet  10.220.88.37 104  0001.00ff.0001  ARPA  Gi0/0/0
-Internet  10.220.88.38 161  0002.00ff.0001  ARPA  Gi0/0/0
+       Protocol  Address      Age  Hardware Addr   Type  Interface
+       Internet  10.220.88.1   67  0062.ec29.70fe  ARPA  Gi0/0/0
+       Internet  10.220.88.20  29  c89c.1dea.0eb6  ARPA  Gi0/0/0
+       Internet  10.220.88.22   -  a093.5141.b780  ARPA  Gi0/0/0
+       Internet  10.220.88.37 104  0001.00ff.0001  ARPA  Gi0/0/0
+       Internet  10.220.88.38 161  0002.00ff.0001  ARPA  Gi0/0/0
 
-2a. Create a list where each of the list elements is a dictionary representing one of the network devices in the lab. Do this for at least four of the lab devices. The dictionary should have keys corresponding to the device_name, host (i.e. FQDN), username, and password. Use a fictional username/password to avoid checking the lab password into GitHub.
+2. YAML
 
-2b. Write the data structure you created in part 2a out to a YAML file. Use expanded YAML format. How could you re-use this YAML file later when creating Netmiko connections to devices?
+   a. Create a list where each of the list elements is a dictionary representing one of the network devices in the lab. Do this for at least four of the lab devices. The dictionary should have keys corresponding to the device_name, host (i.e. FQDN), username, and password. Use a fictional username/password to avoid checking the lab password into GitHub.
+
+   b. Write the data structure you created in part 2a out to a YAML file. Use expanded YAML format. How could you re-use this YAML file later when creating Netmiko connections to devices?
 
 
 3. NAPALM using nxos_ssh has the following data structure in one of its unit tests (the below data is in JSON format).  
 
-{
-    "Ethernet2/1": {
-        "ipv4": {
-            "1.1.1.1": {
-                "prefix_length": 24
-            }
-        }
-    },
-    "Ethernet2/2": {
-        "ipv4": {
-            "2.2.2.2": {
-                "prefix_length": 27
-            }, 
-            "3.3.3.3": {
-                "prefix_length": 25
-            }
-        }
-    }, 
-    "Ethernet2/3": {
-        "ipv4": {
-            "4.4.4.4": {
-                "prefix_length": 16
-            }
-        }, 
-        "ipv6": {
-            "fe80::2ec2:60ff:fe4f:feb2": {
-                "prefix_length": 64
-            }, 
-            "2001:db8::1": {
-                "prefix_length": 10
-            }
-        }
-    }, 
-    "Ethernet2/4": {
-        "ipv6": {
-            "fe80::2ec2:60ff:fe4f:feb2": {
-                "prefix_length": 64
-            }, 
-            "2001:11:2233::a1": {
-                "prefix_length": 24
-            }, 
-            "2001:cc11:22bb:0:2ec2:60ff:fe4f:feb2": {
-                "prefix_length": 64
-            }
-        }
-    } 
-}
-Read this JSON data in from a file.
+       {
+           "Ethernet2/1": {
+               "ipv4": {
+                   "1.1.1.1": {
+                       "prefix_length": 24
+                   }
+               }
+           },
+           "Ethernet2/2": {
+               "ipv4": {
+                   "2.2.2.2": {
+                       "prefix_length": 27
+                   }, 
+                   "3.3.3.3": {
+                       "prefix_length": 25
+                   }
+               }
+           }, 
+           "Ethernet2/3": {
+               "ipv4": {
+                   "4.4.4.4": {
+                       "prefix_length": 16
+                   }
+               }, 
+               "ipv6": {
+                   "fe80::2ec2:60ff:fe4f:feb2": {
+                       "prefix_length": 64
+                   }, 
+                   "2001:db8::1": {
+                       "prefix_length": 10
+                   }
+               }
+           }, 
+           "Ethernet2/4": {
+               "ipv6": {
+                   "fe80::2ec2:60ff:fe4f:feb2": {
+                       "prefix_length": 64
+                   }, 
+                   "2001:11:2233::a1": {
+                       "prefix_length": 24
+                   }, 
+                   "2001:cc11:22bb:0:2ec2:60ff:fe4f:feb2": {
+                       "prefix_length": 64
+                   }
+               }
+           } 
+       }
 
-From this data structure extract all of the IPv4 and IPv6 addresses that are used on this NXOS device. From this data create two lists: 'ipv4_list' and 'ipv6_list'. The 'ipv4_list' should be a list of all of the IPv4 addresses including prefixes; the 'ipv6_list' should be a list of all of the IPv6 addresses including prefixes.
+   Read this JSON data in from a file.
+
+   From this data structure extract all of the IPv4 and IPv6 addresses that are used on this NXOS device. From this data create two lists: 'ipv4_list' and 'ipv6_list'. The 'ipv4_list' should be a list of all of the IPv4 addresses including prefixes; the 'ipv6_list' should be a list of all of the IPv6 addresses including prefixes.
 
 
 4. You have the following JSON ARP data from an Arista switch:
 
-{
-    "dynamicEntries": 2,
-    "ipV4Neighbors": [
-        {
-            "hwAddress": "dc38.e111.97cf",
-            "address": "172.17.17.1",
-            "interface": "Ethernet45",
-            "age": 0
-        },
-        {
-            "hwAddress": "90e2.ba5c.25fd",
-            "address": "172.17.16.1",
-            "interface": "Ethernet36",
-            "age": 0
-        }
-    ],
-    "notLearnedEntries": 0,
-    "totalEntries": 2,
-    "staticEntries": 0
-}
+       {
+           "dynamicEntries": 2,
+           "ipV4Neighbors": [
+               {
+                   "hwAddress": "dc38.e111.97cf",
+                   "address": "172.17.17.1",
+                   "interface": "Ethernet45",
+                   "age": 0
+               },
+               {
+                   "hwAddress": "90e2.ba5c.25fd",
+                   "address": "172.17.16.1",
+                   "interface": "Ethernet36",
+                   "age": 0
+               }
+           ],
+           "notLearnedEntries": 0,
+           "totalEntries": 2,
+           "staticEntries": 0
+       }
 
-From a file, read this JSON data into your Python program. Process this ARP data and return a dictionary where the dictionary keys are the IP addresses and the dictionary values are the MAC addresses. Print this dictionary to standard output.
+   From a file, read this JSON data into your Python program. Process this ARP data and return a dictionary where the dictionary keys are the IP addresses and the dictionary values are the MAC addresses. Print this dictionary to standard output.
 
 
 5. In your lab environment, there is a file located at ~/.netmiko.yml. This file contains all of the devices used in the lab. Create a Python program that processes this YAML file and then uses Netmiko to connect to the Cisco3 router. Print out the router prompt from this device.
 
-Note, the device dictionaries in the .netmiko.yml file use key-value pairs designed to work directly with Netmiko. The .netmiko.yml also contains group definitions for: cisco, arista, juniper, and nxos groups. These group definitions are lists of devices. Once again, don't check the .netmiko.yml into GitHub.
+   ***Note, the device dictionaries in the .netmiko.yml file use key-value pairs designed to work directly with Netmiko. The .netmiko.yml also contains group definitions for: cisco, arista, juniper, and nxos groups. These group definitions are lists of devices. Once again, don't check the .netmiko.yml into GitHub.
 
 
 6. Use Netmiko to retrieve 'show run' from the Cisco4 device. Feed this configuration into CiscoConfParse.
 
-Use CiscoConfParse to find all of the interfaces on Cisco4 that have an IP address. Print out the interface name and IP address for each interface. Your solution should work if there is more than one IP address configured on Cisco4. For example, if you configure a loopback interface on Cisco4 with an IP address, then your solution should continue to work. The output from this program should look similar to the following: 
+   Use CiscoConfParse to find all of the interfaces on Cisco4 that have an IP address. Print out the interface name and IP address for each interface. Your solution should work if there is more than one IP address configured on Cisco4. For example, if you configure a loopback interface on Cisco4 with an IP address, then your solution should continue to work. The output from this program should look similar to the following: 
 
-$ python confparse_ex6.py 
+       $ python confparse_ex6.py 
 
-Interface Line: interface GigabitEthernet0/0/0
-IP Address Line:  ip address 10.220.88.23 255.255.255.0
+       Interface Line: interface GigabitEthernet0/0/0
+       IP Address Line:  ip address 10.220.88.23 255.255.255.0
 
 
 7. You have the following BGP configuration from a Cisco IOS-XR router: 
 
-router bgp 44
- bgp router-id 10.220.88.38
- address-family ipv4 unicast
- !
- neighbor 10.220.88.20
-  remote-as 42
-  description pynet-rtr1
-  address-family ipv4 unicast
-   route-policy ALLOW in
-   route-policy ALLOW out
-  !
- !
- neighbor 10.220.88.32
-  remote-as 43
-  address-family ipv4 unicast
-   route-policy ALLOW in
-   route-policy ALLOW out
+       router bgp 44
+        bgp router-id 10.220.88.38
+        address-family ipv4 unicast
+        !
+        neighbor 10.220.88.20
+         remote-as 42
+         description pynet-rtr1
+         address-family ipv4 unicast
+          route-policy ALLOW in
+          route-policy ALLOW out
+         !
+        !
+        neighbor 10.220.88.32
+         remote-as 43
+         address-family ipv4 unicast
+          route-policy ALLOW in
+          route-policy ALLOW out
 
-From this BGP configuration, retrieve all of BGP peer IP addresses and their corresponding remote-as. Return a list of tuples. The tuples should be (neighbor_ip, remote_as). Print your data-structure to standard output.
+   From this BGP configuration, retrieve all of BGP peer IP addresses and their corresponding remote-as. Return a list of tuples. The tuples should be (neighbor_ip, remote_as). Print your data-structure to standard output.
 
-Your output should look similar to the following. Use ciscoconfparse to accomplish this. 
+   Your output should look similar to the following. Use ciscoconfparse to accomplish this. 
 
-BGP Peers: 
-[('10.220.88.20', '42'), ('10.220.88.32', '43')]
+       BGP Peers: 
+       [('10.220.88.20', '42'), ('10.220.88.32', '43')]
 
 
 -----------------------------------------------------------------------------------------
@@ -431,7 +437,7 @@ https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex4_junos_
 https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex5_nxos_show_lldp_neighbors.txt
 
 
-6. Parse the following 'show ip bgp summary' output (see link below). From this output, extract the following fields: Neighbor, Remote AS, Up_Down, and State_PrefixRcvd. Also include the Local AS and the BGP Router ID in each row of the tabular output (hint: use filldown for this). Note, in order to simplify this problem only worry about the data shown in the output (in other words, don't worry about all possible values that could be present in the output).
+6. Parse the following 'show ip bgp summary' output (see link below). From this output, extract the following fields: Neighbor, Remote AS, Up_Down, and State_PrefixRcvd. Also include the Local AS and the BGP Router ID in each row of the tabular output (hint: use filldown for this). ***Note, in order to simplify this problem only worry about the data shown in the output (in other words, don't worry about all possible values that could be present in the output).
 
 Second hint: remember there is an implicit 'EOF -> Record' at the end of the template (by default).
 
@@ -536,11 +542,11 @@ router bgp 22
 
 
 
-2c. Use Netmiko to push the configurations generated in exercise 2b to the nxos1 device and to the nxos2 device, respectively. Verify you are able to ping between the devices and also verify that the BGP session reaches the established state. Note, you might need to use an alternate interface besides Ethernet 1/1 (you can use either Ethernet 1/1, 1/2, 1/3, or 1/4). Additionally, you might need to use a different IP network (to avoid conflicts with other students). Your autonomous system should remain 22, however.
+2c. Use Netmiko to push the configurations generated in exercise 2b to the nxos1 device and to the nxos2 device, respectively. Verify you are able to ping between the devices and also verify that the BGP session reaches the established state. ***Note, you might need to use an alternate interface besides Ethernet 1/1 (you can use either Ethernet 1/1, 1/2, 1/3, or 1/4). Additionally, you might need to use a different IP network (to avoid conflicts with other students). Your autonomous system should remain 22, however.
 
 For this exercise you should store your Netmiko connection dictionaries in an external file named my_devices.py and should import nxos1, and nxos2 from that external file. Make sure that you use getpass() to enter the password in for these devices (as opposed to storing the definitions in the file).
 
-Note, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
+***Note, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
 
 
 3. Generate the following configuration output from an external Jinja2 template:
@@ -564,7 +570,7 @@ Both the IPv4 and the IPv6 address families should be controlled by Jinja2 condi
 
 4. Expand on exercise3 except use a for-loop to configure five VRFs. Each VRF should have a unique name and a unique route distinguisher. Each VRF should once again have the IPv4 and the IPv6 address families controlled by a conditional-variable passed into the template.
 
-Note, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
+***Note, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
 
 
 5. Start with the full running-config from cisco3.lasthop.io as a base template (for example 'cisco3_config.j2'). Modify this base template such that you use Jinja2 include statements to pull in sub-templates for the NTP servers, the AAA configuration, and for the clock settings.
@@ -605,7 +611,7 @@ The output from this should be the full configuration which is basically identic
 
 3. Using your external YAML file and your function located in my_funcs.py, use pyeapi to connect to arista4.lasthop.io and retrieve "show ip route". From this routing table data, extract all of the static and connected routes from the default VRF. Print these routes to the screen and indicate whether the route is a connected route or a static route. In the case of a static route, print the next hop address.
 
-4. Note, this exercise might be fairly challenging. Construct a new YAML file that contains the four Arista switches. This YAML file should contain all of the connection information need to create a pyeapi connection using the connect method. Using this inventory information and pyeapi, create a Python script that configures the following on the four Arista switches:  
+4. ***Note, this exercise might be fairly challenging. Construct a new YAML file that contains the four Arista switches. This YAML file should contain all of the connection information need to create a pyeapi connection using the connect method. Using this inventory information and pyeapi, create a Python script that configures the following on the four Arista switches:  
 
 interface {{ intf_name }}
    ip address {{ intf_ip }}/{{ intf_mask }}
@@ -678,7 +684,7 @@ Use pyeapi to push this configuration to the four Arista switches. Use pyeapi an
 
 2. xmltodict basics
 
-2a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. Note, the newly created object is an OrderedDict; not a traditional dictionary.
+2a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. ***Note, the newly created object is an OrderedDict; not a traditional dictionary.
 
 
 2b. Print the names and an index number of each security zone in the XML data from Exercise 2a. Your output should look similar to the following (tip, enumerate will probably help): 
@@ -730,7 +736,7 @@ zones-security-interfaces
 
 Namespaces in XML help to differentiate between conflicting element names. 
 
-5a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. Note this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
+5a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. ***Note this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
 
 
 5b. Similar to earlier exercises, use the find() method to access the text of the "proc_board_id" element (serial number). As this XML object contains namespace data, you will need to use the {*} namespace wildcard in the find() method. Your find call should look as follows:
@@ -891,7 +897,7 @@ print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
 
 2c. Attempt to use the get_ntp_peers() method against both of the devices. Does this method work? Your code should gracefully handle any exceptions that occur. In other words, an exception that occurs due to this get_ntp_peers() method, should not cause the program to crash.
 
-2d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. Note, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
+2d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. ***Note, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
 
 
 3. NAPALM Config Merge
@@ -949,7 +955,7 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 
 2. Create a new file named my_functions.py. Move your function from exercise1 to this file. Name this function "ssh_command". Reuse functions from this file for the rest of the exercises. Complete the same task as Exercise 1b except this time use "legacy" threads to create a solution. Launch a separate thread for each device's SSH connection. Print the time required to complete the task for all of the devices. Move all of the device specific output printing to the called function (i.e. to the child thread). 
 
-3a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. Note, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
+3a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. ***Note, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
 
 3b. Instead of waiting for all of the futures to complete, use "as_completed" to print the future results as they come available. Reuse your "ssh_command2" function to accomplish this. Once again use the concurrent futures "ThreadPoolExecutor" and print the "show version" results to standard output. Additionally, print the total execution time to standard output.
 
@@ -957,7 +963,7 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 
 5. Using a context manager and a 'ProcessPoolExecutor', complete the same task as Exercise 4.
 
-6. Using a context manager, the ProcessPoolExecutor, and the map() method, create a solution that executes "show ip arp" on all of the devices defined in my_devices.py. Note, the Juniper device will require "show arp" instead of "show ip arp" so your solution will have to properly account for this.
+6. Using a context manager, the ProcessPoolExecutor, and the map() method, create a solution that executes "show ip arp" on all of the devices defined in my_devices.py. ***Note, the Juniper device will require "show arp" instead of "show ip arp" so your solution will have to properly account for this.
 
 
 -----------------------------------------------------------------------------------------
@@ -984,9 +990,9 @@ curl -L -s https://netbox.lasthop.io/api/ --insecure
 You can also pipe this into the "jq" utility for prettier output:
 
 curl -L -s https://netbox.lasthop.io/api/ --insecure | jq
-Note, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
+***Note, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
 
-1b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. Note, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
+1b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. ***Note, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
 
 curl -H "Authorization: Token $NETBOX_TOKEN" https://netbox.lasthop.io/api/dcim/devices/ --insecure | jq
 
@@ -1020,7 +1026,7 @@ Then add the following key to your HTTP Headers:
 
 http_headers["Authorization"] = f"Token {token}"
 
-From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". Note, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
+From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". ***Note, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
 
 3b. Using the same device information retrieved in exercise 3a, create and print a report to standard output. This report should contain the location, manufacturer, and status for each device. Your output should look similar to the following:
 
@@ -1102,13 +1108,13 @@ Pretty print the response.json() data from this HTTP GET. Please note the ID of 
 
 1c. Run pycodestyle against "fixme_orig.py". Create a copy of fixme_orig.py; name the new file fixme_pep8.py. Fix all of the pycodestyle errors that are in this fixme_pep8.py file.
 
-1d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. Note that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
+1d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. ***Note that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
 
 2. Black
 
 2a. Copy the original "fixme_orig.py" file to a new file named "fixme_black.py". Run Black against this file in "diff" mode i.e. with the "--diff" flag to show the changes that Black *would* make to this file.
 
-2b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. Note, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
+2b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. ***Note, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
 
 3. pytest Introduction
 
