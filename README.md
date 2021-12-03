@@ -2,44 +2,39 @@
 
 This course dives into Python as applied to Network Engineering.
 
-#### Topics covered include:
+## Topics covered include:
 
-- [ ] Git
-- [ ] Netmiko
-- [ ] Complex Data Structures
-- [ ] YAML/JSON
-- [ ] CiscoConfParse
-- [ ] Python Libraries
-- [ ] TextFSM
-- [ ] Jinja2
-- [ ] Arista eAPI
-- [ ] XML
-- [ ] NX-OS NX-API
-- [ ] NETCONF
-- [ ] Juniper PyEZ
-- [ ] NAPALM
-- [ ] SSH and Concurrency
-- [ ] *Using a REST API (Plus and Premium Packages Only)
-- [ ] *pytest, tox, and Travis CI (Premium Package Only)
-- [ ] Create commit conflicts in the local repository
-- [ ] Play aroung with modifying files and commit conflicts
+- [ ] Class 1 - Git and Netmiko (Part1)
+- [ ] Class 2 - Netmiko (Part2)
+- [ ] Class 3 - Data Structures, YAML, JSON and CiscoConfParse
+- [ ] Class 4 - Python Libraries and TextFSM
+- [ ] Class 5 - Jinja2
+- [ ] Class 6 - Arista API
+- [ ] Class 7 - XML & NX-API
+- [ ] Class 8 - NETCONF and Juniper's PyEZ 
+- [ ] Class 9 - NAPALM 
+- [ ] Class 10 - SSH and Concurrency
 
+- [ ] Bonus Lesson 1 - REST API
+- [ ] Bonus Lesson 2 - Pytest, tox, and Travis CI
 
+-----------------------------------------------------------------------------------------
 
-Class 1.
+### Class 1.
 
-- [ ] I.    Why care about Git?               
-- [ ] II.   Git - Getting Started              
-- [ ] III.  Git - Adding and Removing Files              
-- [ ] IV.   Git - Push and Pull            
-- [ ] V.    Git - Branches           
-- [ ] VI.   Git - Rebase           
-- [ ] VII.  Git - Common Workflow           
-- [ ] VIII. Netmiko Overview          
-- [ ] IX.   Netmiko send_command()        
+- [ ] I.    Why care about Git?
+- [ ] II.   Git - Getting Started
+- [ ] III.  Git - Adding and Removing Files
+- [ ] IV.   Git - Push and Pull
+- [ ] V.    Git - Branches
+- [ ] VI.   Git - Rebase
+- [ ] VII.  Git - Common Workflow
+- [ ] VIII. Netmiko Overview
+- [ ] IX.   Netmiko send_command()
 
 
-GIT
+### Exercises:
+
 1. Create a GitHub account (it's free for public repositories).
 
 2. Create a new repository in GitHub for this class. Add a README file and a Python .gitignore file.
@@ -48,25 +43,27 @@ GIT
 
 4. Configure your name and email address on the lab server: 
 
-$ git config --global user.name "John Doe"
-$ git config --global user.email jdoe@domain.com
+       $ git config --global user.name "John Doe"
+       $ git config --global user.email jdoe@domain.com
 
 5. Add and commit three files into your repository in the lab environment. Use 'git status' to verify that all your changes have been committed and that you are working on the 'main' branch.  Push these changes up to GitHub.
 
 6. Create a 'test' branch in your repository.
-    a. Ensure that you are working on the 'test' branch.
-    b. Add two directories to the 'test' branch. Each directory should contain at least one file. These files should be committed into the 'test' branch.
-    c. Use 'git log' to look at your history of commits.
-    d. Modify one of your previously committed files. Use 'git diff' to look at the pending changes in this file. Add and commit these changes.
+
+   a. Ensure that you are working on the 'test' branch.
+   b. Add two directories to the 'test' branch. Each directory should contain at least one file. These files should be committed into the 'test' branch.
+   c. Use 'git log' to look at your history of commits.
+   d. Modify one of your previously committed files. Use 'git diff' to look at the pending changes in this file. Add and commit these changes.
 
 7. Push the 'test' branch up to GitHub.
 
 8. Create a Pull Request inside of GitHub (pull request that would merge the 'test' branch into the 'main' branch). Look at the 'files changed' in the pull request. Merge the pull request.
 
 9. Back on your AWS server
-    a. Switch back to the 'main' branch.
-    b. Use a 'git pull' to retrieve all of the updates from GitHub on the main branch.
-    c. Verify your 'main' branch now has all of the changes that you had previously made in the 'test' branch.
+
+   a. Switch back to the 'main' branch.
+   b. Use a 'git pull' to retrieve all of the updates from GitHub on the main branch.
+   c. Verify your 'main' branch now has all of the changes that you had previously made in the 'test' branch.
 
 10. In the 'main' branch use 'git rm' to remove some file from the branch. Commit this change.
 
@@ -74,50 +71,50 @@ $ git config --global user.email jdoe@domain.com
 
 12. In GitHub, edit the README.md file and commit a change to the 'main' branch in GitHub. On the lab server also edit the README.md file and commit the change into the lab server. Use 'git pull' to pull the 'main' branch from GitHub into the lab server. At this point you should have a merge conflict. It should look something like this: 
 
-$ git pull origin main
-From https://github.com/ktbyers/pyneta
- * branch            main     -> FETCH_HEAD
-Auto-merging README.md
-CONFLICT (content): Merge conflict in README.md
-Automatic merge failed; fix conflicts and then commit the result.
+        $ git pull origin main
+        From https://github.com/ktbyers/pyneta
+         * branch            main     -> FETCH_HEAD
+        Auto-merging README.md
+        CONFLICT (content): Merge conflict in README.md
+        Automatic merge failed; fix conflicts and then commit the result.
 
-Edit the README.md file to correct the merge conflict. The README.md file should have something like the following inside of it:
+    Edit the README.md file to correct the merge conflict. The README.md file should have something like the following inside of it:
 
-$ cat README.md 
-# pyneta
-Test PyNet Repository
+        $ cat README.md 
+        # pyneta
+        Test PyNet Repository
 
-Some additional information on this repository.
+        Some additional information on this repository.
+        
+        <<<<<<< HEAD
+        Create a merge conflict.
+        =======
+        More changes to readme.
+        >>>>>>> 1690ce5a6ddb640198ccf3bca26f32a65d772b92
 
-<<<<<<< HEAD
-Create a merge conflict.
-=======
-More changes to readme.
->>>>>>> 1690ce5a6ddb640198ccf3bca26f32a65d772b92
+    The '<<<<<', '=====', '>>>>>' indicate where the inconsistencies on the file are. Git is basically stating I have this first line(s) from one change and this second line(s) from another change and I do not know which one you want to keep. Which line do you want to keep (could be one of the lines, both of the lines, none of the lines).
 
-The '<<<<<', '=====', '>>>>>' indicate where the inconsistencies on the file are. Git is basically stating I have this first line(s) from one change and this second line(s) from another change and I don't know which one you want to keep. Which line do you want to keep (could be one of the lines, both of the lines, none of the lines).
+    Here is how I fixed the merge conflict in the above file: 
 
-Here is how I fixed the merge conflict in the above file: 
-
-$ cat README.md 
------------------
-# pyneta
-Test PyNet Repository
-
-Some additional information on this repository.
-
-Create a merge conflict.
-
-More changes to readme.
------------------
-
-# Then I need to add and commit the file
-$ git add README.md 
-$ git commit -m "Fixing merge conflict"
-[main e87901a] Fixing merge conflict
+        $ cat README.md 
+        -----------------------
+        # pyneta
+        Test PyNet Repository
+        
+        Some additional information on this repository.
+        
+        Create a merge conflict.
+        
+        More changes to readme.
+        ------------------------
+        
+        # Then I need to add and commit the file
+        $ git add README.md 
+        $ git commit -m "Fixing merge conflict"
+        [main e87901a] Fixing merge conflict
 
 
-Netmiko
+## Netmiko Exercises:
 
 1. In the lab environment use Netmiko to connect to one of the Cisco NX-OS devices. You can find the IP addresses and username/passwords of the Cisco devices in the 'Lab Environment' email or alternatively in the ~/.netmiko.yml file. Simply print the router prompt back from this device to verify you are connecting to the device properly.
 
@@ -126,8 +123,9 @@ Netmiko
 3. For one of the Cisco IOS devices, use Netmiko and the send_command() method to retrieve 'show version'. Save this output to a file in the current working directory.
 
 
+-----------------------------------------------------------------------------------------
 
-Class 2.
+### Class 2.
 
 - [ ] I.    Netmiko Handling Additional Prompts
 - [ ] II.   Netmiko Delay Factor              
@@ -214,7 +212,9 @@ g. After you are done executing your script, look at the 'my_output.txt' file to
 Notes: both the send_config_set() and send_config_from_file() methods automatically enter and exit config mode; consequently, you don't typically need to control this yourself. The write_channel() and read_channel() methods can be useful if you need to make a custom solution to write/read the SSH channel in some way. The session_log can be very helpful for debugging Netmiko issues to see what occurred during the SSH session.
 
 
-Class 3.
+-----------------------------------------------------------------------------------------
+
+### Class 3.
 
 - [ ] I.    Handling Complex Data Structures
 - [ ] II.   Changing Data Structure Format             
@@ -363,7 +363,9 @@ BGP Peers:
 [('10.220.88.20', '42'), ('10.220.88.32', '43')]
 
 
-Class 4.
+-----------------------------------------------------------------------------------------
+
+### Class 4.
 
 - [ ] I.    Python Libraries and PIP 
 - [ ] II.   sys.path and PYTHONPATH
@@ -461,7 +463,9 @@ $ python ex7_show_int_status.py
   'VLAN': '1'}]
 
 
-Class 5.
+-----------------------------------------------------------------------------------------
+
+### Class 5.
 
 - [ ] I.    Jinja2 Templating
 - [ ] II.   Jinja2 Constructs
@@ -574,7 +578,9 @@ The child templates being pulled in should contain the NTP configuration, the AA
 The output from this should be the full configuration which is basically identical to the current running configuration on cisco3.blah.blah.
 
 
-Class 6.
+-----------------------------------------------------------------------------------------
+
+### Class 6.
 
 - [ ] I.    Arista eAPI Introduction
 - [ ] II.   Arista eAPI Request Structure
@@ -622,7 +628,9 @@ arista4:
 Use pyeapi to push this configuration to the four Arista switches. Use pyeapi and "show ip interface brief" to display the IP address table after the configuration changes have been made.
 
 
-Class 7.
+-----------------------------------------------------------------------------------------
+
+### Class 7.
 
 - [ ] I.     XML - Why Care? 
 - [ ] II.    XML Introduction
@@ -747,7 +755,9 @@ Interface: Ethernet1/1; State: up; MTU: 1500
 7c. Using the nxapi_plumbing config_list() method, configure two loopbacks on nxos1 including interface descriptions. Pick random loopback interface numbers between 100 and 199.
 
 
-Class 8.
+-----------------------------------------------------------------------------------------
+ 
+### Class 8.
 
 - [ ] I.    NETCONF Overview
 - [ ] II.   NETCONF and ncclient
@@ -846,7 +856,9 @@ xml_out = dev.rpc.get_interface_information(interface_name="fe-0/0/7", terse=Tru
 print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
 
 
-Class 9.
+-----------------------------------------------------------------------------------------
+
+### Class 9.
 
  - [ ] I.   NAPALM Overview​
  - [ ] II.  NAPALM - Simple Connection​
@@ -911,7 +923,9 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 4d. Create a Python script that stages a complete configuration replace operation (using the checkpoint file that you just retrieved and modified). Once your candidate configuration is staged perform a compare_config (diff) on the configuration to see your pending changes. After the compare_config is complete, then use the discard_config() method to eliminate the pending changes. Next, perform an additional compare_config (diff) to verify that you have no pending configuration changes. Do not actually perform the commit_config as part of this exercise.
 
 
-Class 10.
+-----------------------------------------------------------------------------------------
+
+### Class 10.
 
 - [ ] I.    Concurrency Overview
 - [ ] II.   Threads Overview
@@ -941,7 +955,9 @@ Class 10.
 6. Using a context manager, the ProcessPoolExecutor, and the map() method, create a solution that executes "show ip arp" on all of the devices defined in my_devices.py. Note, the Juniper device will require "show arp" instead of "show ip arp" so your solution will have to properly account for this.
 
 
-Class 11.
+-----------------------------------------------------------------------------------------
+
+### Bonus Lesson 1.
 
 
  - [ ] I.    REST API Introduction
@@ -1051,7 +1067,9 @@ Pretty print the response.json() data from this HTTP GET. Please note the ID of 
 6. Use an HTTP DELETE and Python-requests to delete the IP address object that you just created. Remember to reference the ID of your object.
 
 
-Class 12.
+-----------------------------------------------------------------------------------------
+
+### Bonus Lesson 2.
 
 
  - [ ] I.    Python Code Style
