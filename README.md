@@ -865,8 +865,8 @@ $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt
 
 ### Class 9. NAPALM
 
- - [ ] I.   NAPALM Overview​
- - [ ] II.  NAPALM - Simple Connection​
+ - [ ] I.   NAPALM Overview
+ - [ ] II.  NAPALM - Simple Connection
  - [ ] III. NAPALM - Getters
  - [ ] IV.  NAPALM - Configuration Merge
  - [ ] V.   NAPALM - Configuration Replace
@@ -916,7 +916,7 @@ $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt
 
        "optional_args": {"port": 8443}
 
-   b. Create a new function named 'create_checkpoint'. Add this function into your my_functions.py file. This function should take one argument, the NAPALM connection object. This function should use the NAPALM _get_checkpoint_file() method to retrieve a checkpoint from the NX-OS device. It should then write this checkpoint out to a file.
+   b. Create a new function named 'create_checkpoint'. Add this function into your my_functions.py file. This function should take one argument, the NAPALM connection object. This function should use the NAPALM `_get_checkpoint_file()` method to retrieve a checkpoint from the NX-OS device. It should then write this checkpoint out to a file.
 
    Recall that the NX-OS platform requires a 'checkpoint' file for configuration replace operations. Using this new function, retrieve a checkpoint from nxos1 and write it to the local file system.
 
@@ -941,17 +941,25 @@ $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt
 
 ### Exercises:
 
-1a. As you have done in previous classes, create a Python file named "my_devices.py". In this file, define the connection information for: 'cisco3', 'arista1', 'arista2', and 'srx2'. This file should contain all the necessary information to create a Netmiko connection. Use getpass() for the password handling. Use a global_delay_factor of 4 for both the arista1 device and the arista2 device. This Python module should be used to store the connection information for all of the exercises in this lesson.
+1. SSH to Devices Serially
 
-1b. Create a Python script that executes "show version" on each of the network devices defined in my_devices.py. This script should execute serially i.e. one SSH connection after the other. Record the total execution time for the script. Print the "show version" output and the total execution time to standard output. As part of this exercise, you should create a function that both establishes a Netmiko connection and that executes a single show command that you pass in as argument. This function's arguments should be the Netmiko device dictionary and the "show-command" argument. The function should return the result from the show command.
+   a. As you have done in previous classes, create a Python file named "my_devices.py". In this file, define the connection information for: 'cisco3', 'arista1', 'arista2', and 'srx2'. This file should contain all the necessary information to create a Netmiko connection. Use getpass() for the password handling. Use a global_delay_factor of 4 for both the arista1 device and the arista2 device. This Python module should be used to store the connection information for all of the exercises in this lesson.
 
-2. Create a new file named my_functions.py. Move your function from exercise1 to this file. Name this function "ssh_command". Reuse functions from this file for the rest of the exercises. Complete the same task as Exercise 1b except this time use "legacy" threads to create a solution. Launch a separate thread for each device's SSH connection. Print the time required to complete the task for all of the devices. Move all of the device specific output printing to the called function (i.e. to the child thread). 
+   b. Create a Python script that executes "show version" on each of the network devices defined in my_devices.py. This script should execute serially i.e. one SSH connection after the other. Record the total execution time for the script. Print the "show version" output and the total execution time to standard output. As part of this exercise, you should create a function that both establishes a Netmiko connection and that executes a single show command that you pass in as argument. This function's arguments should be the Netmiko device dictionary and the "show-command" argument. The function should return the result from the show command.
 
-3a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. ***Note***, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
+2. Using Legacy Threads
+   
+   Create a new file named my_functions.py. Move your function from exercise1 to this file. Name this function "ssh_command". Reuse functions from this file for the rest of the exercises. Complete the same task as Exercise 1b except this time use "legacy" threads to create a solution. Launch a separate thread for each device's SSH connection. Print the time required to complete the task for all of the devices. Move all of the device specific output printing to the called function (i.e. to the child thread). 
 
-3b. Instead of waiting for all of the futures to complete, use "as_completed" to print the future results as they come available. Reuse your "ssh_command2" function to accomplish this. Once again use the concurrent futures "ThreadPoolExecutor" and print the "show version" results to standard output. Additionally, print the total execution time to standard output.
+3. Using Concurrent Futures and the "ThreadPoolExecutor"
 
-4. Create a new program that completes the same task as Exercise 3b except using multiple processes (i.e. a 'ProcessPoolExecutor').
+   a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. ***Note***, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
+
+   b. Instead of waiting for all of the futures to complete, use "as_completed" to print the future results as they come available. Reuse your "ssh_command2" function to accomplish this. Once again use the concurrent futures "ThreadPoolExecutor" and print the "show version" results to standard output. Additionally, print the total execution time to standard output.
+
+4. Using Concurrent Futures and the "ProccessesPoolExecutor"
+
+   Create a new program that completes the same task as Exercise 3b except using multiple processes (i.e. a 'ProcessPoolExecutor').
 
 5. Using a context manager and a 'ProcessPoolExecutor', complete the same task as Exercise 4.
 
