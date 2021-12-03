@@ -968,7 +968,7 @@ $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt
 
 -----------------------------------------------------------------------------------------
 
-### Bonus Lesson 1.
+### Bonus Lesson 1. REST API
 
 
  - [ ] I.    REST API Introduction
@@ -983,104 +983,116 @@ $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt
  - [ ] X.    REST API Authentication
  - [ ] XI.   REST API Closing Comments
 
+### Exercises:
 
-1a. Use curl with the "--insecure" option to view the NetBox top-level /api endpoint. An example of this would be: 
+1. 'Curl' to view NetBox top-level/API endpoint.
 
-curl -L -s https://netbox.lasthop.io/api/ --insecure
-You can also pipe this into the "jq" utility for prettier output:
+   a. Use curl with the "--insecure" option to view the NetBox top-level /api endpoint. An example of this would be: 
 
-curl -L -s https://netbox.lasthop.io/api/ --insecure | jq
-***Note***, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
+       curl -L -s https://netbox.lasthop.io/api/ --insecure
 
-1b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. ***Note***, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
+   You can also pipe this into the "jq" utility for prettier output:
 
-curl -H "Authorization: Token $NETBOX_TOKEN" https://netbox.lasthop.io/api/dcim/devices/ --insecure | jq
+       curl -L -s https://netbox.lasthop.io/api/ --insecure | jq
 
-1c. Use curl to retrieve only the device information for a single device (ID=2 for example). Once again this will require authorization. The API URL for this would be (assuming ID 2):
+   ***Note***, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
 
-https://netbox.lasthop.io/api/dcim/devices/2/
+   b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. ***Note***, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
+
+       curl -H "Authorization: Token $NETBOX_TOKEN" https://netbox.lasthop.io/api/dcim/devices/ --insecure | jq
+
+   c. Use curl to retrieve only the device information for a single device (ID=2 for example). Once again this will require authorization. The API URL for this would be (assuming ID 2):
+
+       https://netbox.lasthop.io/api/dcim/devices/2/
  
-2a. Using the Python requests library, perform an HTTP GET on the base URL of the NetBox server (https://netbox.lasthop.io/api/). Ensure that you are not verifying the SSL certificate. Print the HTTP status code, the response text, the JSON response, and the HTTP response headers. These items can be accessed using the following attributes/methods in the Python-requests Response object:
+2. Using HTTP GET and Python 'requests' library.
 
-response.status_code
-response.text
-response.json()
-response.headers
+   a. Using the Python requests library, perform an HTTP GET on the base URL of the NetBox server (https://netbox.lasthop.io/api/). Ensure that you are not verifying the SSL certificate. Print the HTTP status code, the response text, the JSON response, and the HTTP response headers. These items can be accessed using the following attributes/methods in the Python-requests Response object:
 
-2b. Repeat exercise 2a, except properly construct the HTTP request headers as follows:
+       response.status_code
+       response.text
+       response.json()
+       response.headers
 
-http_headers = {}
-http_headers["accept"] = "application/json; version=2.4;"
+   b. Repeat exercise 2a, except properly construct the HTTP request headers as follows:
 
-You will need to pass these HTTP headers into your HTTP GET request. Once again print the HTTP status code, the response text, the JSON response, and the HTTP response headers. 
+       http_headers = {}
+       http_headers["accept"] = "application/json; version=2.4;"
 
-2c. Execute another HTTP GET request to retrieve all of the endpoints under the "/api/dcim" parent. Pretty print out the response.json() from this output. This should be a dictionary with the key being the next part of the URL after "/api/dcim" and the value being the full URL.
+   You will need to pass these HTTP headers into your HTTP GET request. Once again print the HTTP status code, the response text, the JSON response, and the HTTP response headers. 
 
-3a. Retrieve a list of all the devices in NetBox. This will require authentication. As in the previous task, create your headers manually and pass them into your request. In order to perform the NetBox authentication, you should do the following:
+   c. Execute another HTTP GET request to retrieve all of the endpoints under the "/api/dcim" parent. Pretty print out the response.json() from this output. This should be a dictionary with the key being the next part of the URL after "/api/dcim" and the value being the full URL.
 
-import os
-# Set the token based on the NETBOX_TOKEN environment variable
-token = os.environ["NETBOX_TOKEN"]
+3. NetBox authentication and unpacking returned data structures.
 
-Then add the following key to your HTTP Headers:
+   a. Retrieve a list of all the devices in NetBox. This will require authentication. As in the previous task, create your headers manually and pass them into your request. In order to perform the NetBox authentication, you should do the following:
 
-http_headers["Authorization"] = f"Token {token}"
+       import os
+       # Set the token based on the NETBOX_TOKEN environment variable
+       token = os.environ["NETBOX_TOKEN"]
 
-From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". ***Note***, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
+   Then add the following key to your HTTP Headers:
 
-3b. Using the same device information retrieved in exercise 3a, create and print a report to standard output. This report should contain the location, manufacturer, and status for each device. Your output should look similar to the following:
+       http_headers["Authorization"] = f"Token {token}"
 
-------------------------------------------------------------
-arista1
-----------
-Location: Fremont Data Center
-Vendor: Arista
-Status: Active
-------------------------------------------------------------
+   From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". ***Note***, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
 
+   b. Using the same device information retrieved in exercise 3a, create and print a report to standard output. This report should contain the location, manufacturer, and status for each device. Your output should look similar to the following:
 
-------------------------------------------------------------
-arista2
-----------
-Location: Fremont Data Center
-Vendor: Arista
-Status: Active
-------------------------------------------------------------
+       ------------------------------------------------------------
+       arista1
+       ----------
+       Location: Fremont Data Center
+       Vendor: Arista
+       Status: Active
+       ------------------------------------------------------------
+        
+       ------------------------------------------------------------
+       arista2
+       ----------
+       Location: Fremont Data Center
+       Vendor: Arista
+       Status: Active
+       ------------------------------------------------------------
 
-...   # remaining devices
+       ...   # remaining devices
 
-4a. Using an HTTP POST and the Python-requests library, create a new IP address in NetBox. This IP address object should be a /32 from the 192.0.2.0/24 documentation block. Print out the status code and the returned JSON.
+4. Using HTTP POST and Python 'requests library.
+
+   a. Using an HTTP POST and the Python-requests library, create a new IP address in NetBox. This IP address object should be a /32 from the 192.0.2.0/24 documentation block. Print out the status code and the returned JSON.
 The HTTP headers for this request should look as follows:
 
-http_headers = {}
-http_headers["Content-Type"] = "application/json; version=2.4;"
-http_headers["accept"] = "application/json; version=2.4;"
-http_headers["Authorization"] = f"Token {token}"
+       http_headers = {}
+       http_headers["Content-Type"] = "application/json; version=2.4;"
+       http_headers["accept"] = "application/json; version=2.4;"
+       http_headers["Authorization"] = f"Token {token}"
 
-The URL for the HTTP POST is:
+   The URL for the HTTP POST is:
 
-https://netbox.lasthop.io/api/ipam/ip-addresses/
+       https://netbox.lasthop.io/api/ipam/ip-addresses/
 
-The JSON payload data for this request should be similar to the following:
+   The JSON payload data for this request should be similar to the following:
 
-data = {"address": "192.0.2.100/32"}
+       data = {"address": "192.0.2.100/32"}
 
-4b. Using the response data from the HTTP POST that created the IP address entry in exercise 4a, capture the "id" of the newly created IP address object. Using this ID, construct a new URL. Use this new URL and the HTTP GET method to retrieve only the API information specific to this IP address. Your IP address URL should be of the following form:
+   b. Using the response data from the HTTP POST that created the IP address entry in exercise 4a, capture the "id" of the newly created IP address object. Using this ID, construct a new URL. Use this new URL and the HTTP GET method to retrieve only the API information specific to this IP address. Your IP address URL should be of the following form:
 
-https://netbox.lasthop.io/api/ipam/ip-addresses/{address_id}/
+       https://netbox.lasthop.io/api/ipam/ip-addresses/{address_id}/
 
-where {address_id} is the ID of the object that you just created.
+   where {address_id} is the ID of the object that you just created.
 
-Pretty print the response.json() data from this HTTP GET. Please note the ID of the address object that you just created.
+   Pretty print the response.json() data from this HTTP GET. Please note the ID of the address object that you just created.
 
-5. Building on the script from exercise 4, add a description to the the IP address object that you just created. Accomplish this using an HTTP PUT. The HTTP PUT operation will require all of the mandatory fields in the object (in this case, the "address" field). Print the status code and the response.json() from your PUT operation. The HTTP PUT operation will use same URL as exercise 4b (i.e. the URL of the newly created IP address object including its ID).
+5. Using HTTP PUT and Python 'requests library.
+
+   Building on the script from exercise 4, add a description to the the IP address object that you just created. Accomplish this using an HTTP PUT. The HTTP PUT operation will require all of the mandatory fields in the object (in this case, the "address" field). Print the status code and the response.json() from your PUT operation. The HTTP PUT operation will use same URL as exercise 4b (i.e. the URL of the newly created IP address object including its ID).
 
 6. Use an HTTP DELETE and Python-requests to delete the IP address object that you just created. Remember to reference the ID of your object.
 
 
 -----------------------------------------------------------------------------------------
 
-### Bonus Lesson 2.
+### Bonus Lesson 2. Pytest, tox, and Travis CI
 
 
  - [ ] I.    Python Code Style
@@ -1099,65 +1111,66 @@ Pretty print the response.json() data from this HTTP GET. Please note the ID of 
  - [ ] XIV.  CI-CD Introduction
  - [ ] XV.   Travis-CI Integration
 
+### Exercises:
 
 1. Pylint, pycodestyle, and Pylama Intro
 
-1a. Copy the "fixme_orig.py" and the "my_devices.py" files from this week's course repository. Execute this "fixme_orig.py" code. It should successfully run and should print out NAPALM device facts. While the code is functional, there are some Python-style issues it.
+   a. Copy the "fixme_orig.py" and the "my_devices.py" files from this week's course repository. Execute this "fixme_orig.py" code. It should successfully run and should print out NAPALM device facts. While the code is functional, there are some Python-style issues it.
 
-1b. Run pylint against this "fixme_orig.py" file. Create a copy of fixme_orig.py; name the new file fixme_pylint.py. Fix all of the Pylint errors that are in this fixme_pylint.py file.
+   b. Run pylint against this "fixme_orig.py" file. Create a copy of fixme_orig.py; name the new file fixme_pylint.py. Fix all of the Pylint errors that are in this fixme_pylint.py file.
 
-1c. Run pycodestyle against "fixme_orig.py". Create a copy of fixme_orig.py; name the new file fixme_pep8.py. Fix all of the pycodestyle errors that are in this fixme_pep8.py file.
+   c. Run pycodestyle against "fixme_orig.py". Create a copy of fixme_orig.py; name the new file fixme_pep8.py. Fix all of the pycodestyle errors that are in this fixme_pep8.py file.
 
-1d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. ***Note*** that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
+   d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. ***Note*** that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
 
 2. Black
 
-2a. Copy the original "fixme_orig.py" file to a new file named "fixme_black.py". Run Black against this file in "diff" mode i.e. with the "--diff" flag to show the changes that Black *would* make to this file.
+   a. Copy the original "fixme_orig.py" file to a new file named "fixme_black.py". Run Black against this file in "diff" mode i.e. with the "--diff" flag to show the changes that Black *would* make to this file.
 
-2b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. ***Note***, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
+   b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. ***Note***, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
 
 3. pytest Introduction
 
-3a. Create a new directory named "test_ex3". In this directory, create a file named "test_simple.py". In this file, write two simple functions "my_add" and "my_mul" which add two values together and multiply two values together respectively (and then return these values).
+   a. Create a new directory named "test_ex3". In this directory, create a file named "test_simple.py". In this file, write two simple functions "my_add" and "my_mul" which add two values together and multiply two values together respectively (and then return these values).
 
-3b. Create two test functions "test_my_add" and "test_my_mul". These test functions should assert that the appropriate values are returned by "my_add" and "my_mul". Run your tests using "py.test -s -v test_simple.py".
+   b. Create two test functions "test_my_add" and "test_my_mul". These test functions should assert that the appropriate values are returned by "my_add" and "my_mul". Run your tests using "py.test -s -v test_simple.py".
 
-3c. Modify one of your assert statements to intentionally cause py.test to fail. Execute "py.test" again and view the failed test.
+   c. Modify one of your assert statements to intentionally cause py.test to fail. Execute "py.test" again and view the failed test.
 
-3d. Fix the assert statement that you intentionally broke in the previous step. Verify your tests now all pass successfully.
+   d. Fix the assert statement that you intentionally broke in the previous step. Verify your tests now all pass successfully.
 
 4. pytest and Fixtures
 
-4a. Create a new file named "test_netmiko.py". In this file, create a simple function that connects to arista1.lasthop.io and returns the Netmiko connection object. 
+   a. Create a new file named "test_netmiko.py". In this file, create a simple function that connects to arista1.lasthop.io and returns the Netmiko connection object. 
 
-4b. Add a test into "test_netmiko.py" where you verify the Netmiko find_prompt() method works properly. This test should use the Netmiko connection function that you created in Exercise 4a.
+   b. Add a test into "test_netmiko.py" where you verify the Netmiko find_prompt() method works properly. This test should use the Netmiko connection function that you created in Exercise 4a.
 
-4c. Create a second test function named "test_show_version" where you verify the EOS software version (currently the software version value is "4.20.10M", but this is subject to change in the future). Verify both of your tests from Exercise 4b and 4c pass properly using "py.test -s -v".
+   c. Create a second test function named "test_show_version" where you verify the EOS software version (currently the software version value is "4.20.10M", but this is subject to change in the future). Verify both of your tests from Exercise 4b and 4c pass properly using "py.test -s -v".
 
-4d. Copy your "test_netmiko.py" file into a file named "test_netmiko_fixture.py". Now refactor your new "test_netmiko_fixture.py" file. This new module should be the same as what you had in Exercise 4c except that you should make the Netmiko connection function a pytest fixture (with a scope of "module"). Additionally, you should use this fixture for both of your test functions. Execute both of your tests in "test_netmiko_fixture.py" and verify they pass properly using "py.test -s -v test_netmiko_fixture.py".
+   d. Copy your "test_netmiko.py" file into a file named "test_netmiko_fixture.py". Now refactor your new "test_netmiko_fixture.py" file. This new module should be the same as what you had in Exercise 4c except that you should make the Netmiko connection function a pytest fixture (with a scope of "module"). Additionally, you should use this fixture for both of your test functions. Execute both of your tests in "test_netmiko_fixture.py" and verify they pass properly using "py.test -s -v test_netmiko_fixture.py".
 
 5. pytest conftest.py
 
-5a. In a new directory named test_ex5, create a file named "conftest.py". In this file, copy the Netmiko connection function that you used as a fixture in the previous exercise.
+   a. In a new directory named test_ex5, create a file named "conftest.py". In this file, copy the Netmiko connection function that you used as a fixture in the previous exercise.
 
-5b. In a second file named "test_netmiko_conftest.py", re-create the same two test functions used in exercise4 (test_prompt, and test_show_version). Ensure those test functions are using the fixture from conftest.py. Execute "py.test -s -v" in this directory and verify your tests pass properly.
+   b. In a second file named "test_netmiko_conftest.py", re-create the same two test functions used in exercise4 (test_prompt, and test_show_version). Ensure those test functions are using the fixture from conftest.py. Execute "py.test -s -v" in this directory and verify your tests pass properly.
 
-5c. Add a finalizer to your fixture such that Netmiko gracefully closes the SSH session at the end of all your tests. Verify all of your tests still pass using "py.test -s -v".
+   c. Add a finalizer to your fixture such that Netmiko gracefully closes the SSH session at the end of all your tests. Verify all of your tests still pass using "py.test -s -v".
 
 6. [Optional] Integrating Travis-CI to your PyPlus Course Repository
 
-Disclaimer: please ensure that the below is appropriate for your GitHub account since you will be giving Travis-CI access into that account.
+   Disclaimer: please ensure that the below is appropriate for your GitHub account since you will be giving Travis-CI access into that account.
 
-6a. In GitHub, create a fork of the "pyplus_course" repository (https://github.com/ktbyers/pyplus_course).
+   a. In GitHub, create a fork of the "pyplus_course" repository (https://github.com/ktbyers/pyplus_course).
 
-6b. Go to Travis-CI (https://travis-ci.com), in the top right corner, click "Sign in with GitHub". Follow the prompts to authorize your account. Once completed, click the "Activate" button on your user Dashboard/Repositories page.
+   b. Go to Travis-CI (https://travis-ci.com), in the top right corner, click "Sign in with GitHub". Follow the prompts to authorize your account. Once completed, click the "Activate" button on your user Dashboard/Repositories page.
 
-6c. Select ONLY the forked "pyplus_course" repository and click "Approve & Install".
+   c. Select ONLY the forked "pyplus_course" repository and click "Approve & Install".
 
-6d. Clone the "pyplus_course" repository that you forked earlier into your account on the AWS lab system. Edit the README.md to include some additional text. Commit this change, and then push this change back into GitHub (reminder, you should now be working on your fork of this 'pyplus_course' repository; consequently, you should be pushing the change back to your fork).
+   d. Clone the "pyplus_course" repository that you forked earlier into your account on the AWS lab system. Edit the README.md to include some additional text. Commit this change, and then push this change back into GitHub (reminder, you should now be working on your fork of this 'pyplus_course' repository; consequently, you should be pushing the change back to your fork).
 
-6e. In the Travis-CI dashboard, you should now see a process starting or running. This build is executing commands that it has discovered in the ".travis.yml" file. If all goes well you should see the results of the build shortly.
+   e. In the Travis-CI dashboard, you should now see a process starting or running. This build is executing commands that it has discovered in the ".travis.yml" file. If all goes well you should see the results of the build shortly.
 
-6f. If you want to intentionally create a failure in Travis-CI, then add a file named "my_test.py" to the base of the pyplus_course repository. In this file, ensure there is a pycodestyle or black issue. For example, add a=22 with no spaces around the equals sign. Commit this file using Git. Push this file back into your pyplus_course repository. Travis-CI should now fail as both the 'pylama .' check and the 'black --check .' will fail.
+   f. If you want to intentionally create a failure in Travis-CI, then add a file named "my_test.py" to the base of the pyplus_course repository. In this file, ensure there is a pycodestyle or black issue. For example, add a=22 with no spaces around the equals sign. Commit this file using Git. Push this file back into your pyplus_course repository. Travis-CI should now fail as both the 'pylama .' check and the 'black --check .' will fail.
 
 
