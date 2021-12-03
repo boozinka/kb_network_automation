@@ -1,4 +1,4 @@
-#Following Kirk Byers Python Network Automation Course
+# Following Kirk Byers Python Network Automation Course
 
 This course dives into Python as applied to Network Engineering.
 
@@ -33,7 +33,7 @@ This course dives into Python as applied to Network Engineering.
 - [ ] IX.   Netmiko send_command()
 
 
-### Exercises:
+### Git Exercises:
 
 1. Create a GitHub account (it's free for public repositories).
 
@@ -51,8 +51,11 @@ This course dives into Python as applied to Network Engineering.
 6. Create a 'test' branch in your repository.
 
    a. Ensure that you are working on the 'test' branch.
+ 
    b. Add two directories to the 'test' branch. Each directory should contain at least one file. These files should be committed into the 'test' branch.
+
    c. Use 'git log' to look at your history of commits.
+
    d. Modify one of your previously committed files. Use 'git diff' to look at the pending changes in this file. Add and commit these changes.
 
 7. Push the 'test' branch up to GitHub.
@@ -62,7 +65,9 @@ This course dives into Python as applied to Network Engineering.
 9. Back on your AWS server
 
    a. Switch back to the 'main' branch.
+ 
    b. Use a 'git pull' to retrieve all of the updates from GitHub on the main branch.
+
    c. Verify your 'main' branch now has all of the changes that you had previously made in the 'test' branch.
 
 10. In the 'main' branch use 'git rm' to remove some file from the branch. Commit this change.
