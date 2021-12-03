@@ -206,7 +206,7 @@ This course dives into Python as applied to Network Engineering.
 
    c. Execute the exit_config_mode() method and print the new prompt using find_prompt()
 
-   d. Use the write_channel() method to send the 'disable' command down the SSH channel. ***Note, write_channel is a low level method so it requires that you add a newline to the end of your 'disable' command.
+   d. Use the write_channel() method to send the 'disable' command down the SSH channel. ***Note***, write_channel is a low level method so it requires that you add a newline to the end of your 'disable' command.
 
    e. time.sleep for two seconds and then use the read_channel() method to read the data that is currently available on the SSH channel. Print this to the screen.
 
@@ -215,7 +215,7 @@ This course dives into Python as applied to Network Engineering.
    g. After you are done executing your script, look at the 'my_output.txt' file to see what is included in the session_log.
 
 
-   ***Notes: both the send_config_set() and send_config_from_file() methods automatically enter and exit config mode; consequently, you don't typically need to control this yourself. The write_channel() and read_channel() methods can be useful if you need to make a custom solution to write/read the SSH channel in some way. The session_log can be very helpful for debugging Netmiko issues to see what occurred during the SSH session.
+   ***Notes***: both the send_config_set() and send_config_from_file() methods automatically enter and exit config mode; consequently, you don't typically need to control this yourself. The write_channel() and read_channel() methods can be useful if you need to make a custom solution to write/read the SSH channel in some way. The session_log can be very helpful for debugging Netmiko issues to see what occurred during the SSH session.
 
 
 -----------------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ This course dives into Python as applied to Network Engineering.
 
 5. In your lab environment, there is a file located at ~/.netmiko.yml. This file contains all of the devices used in the lab. Create a Python program that processes this YAML file and then uses Netmiko to connect to the Cisco3 router. Print out the router prompt from this device.
 
-   ***Note, the device dictionaries in the .netmiko.yml file use key-value pairs designed to work directly with Netmiko. The .netmiko.yml also contains group definitions for: cisco, arista, juniper, and nxos groups. These group definitions are lists of devices. Once again, don't check the .netmiko.yml into GitHub.
+   ***Note***, the device dictionaries in the .netmiko.yml file use key-value pairs designed to work directly with Netmiko. The .netmiko.yml also contains group definitions for: cisco, arista, juniper, and nxos groups. These group definitions are lists of devices. Once again, don't check the .netmiko.yml into GitHub.
 
 
 6. Use Netmiko to retrieve 'show run' from the Cisco4 device. Feed this configuration into CiscoConfParse.
@@ -437,7 +437,7 @@ https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex4_junos_
 https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex5_nxos_show_lldp_neighbors.txt
 
 
-6. Parse the following 'show ip bgp summary' output (see link below). From this output, extract the following fields: Neighbor, Remote AS, Up_Down, and State_PrefixRcvd. Also include the Local AS and the BGP Router ID in each row of the tabular output (hint: use filldown for this). ***Note, in order to simplify this problem only worry about the data shown in the output (in other words, don't worry about all possible values that could be present in the output).
+6. Parse the following 'show ip bgp summary' output (see link below). From this output, extract the following fields: Neighbor, Remote AS, Up_Down, and State_PrefixRcvd. Also include the Local AS and the BGP Router ID in each row of the tabular output (hint: use filldown for this). ***Note***, in order to simplify this problem only worry about the data shown in the output (in other words, don't worry about all possible values that could be present in the output).
 
 Second hint: remember there is an implicit 'EOF -> Record' at the end of the template (by default).
 
@@ -542,11 +542,11 @@ router bgp 22
 
 
 
-2c. Use Netmiko to push the configurations generated in exercise 2b to the nxos1 device and to the nxos2 device, respectively. Verify you are able to ping between the devices and also verify that the BGP session reaches the established state. ***Note, you might need to use an alternate interface besides Ethernet 1/1 (you can use either Ethernet 1/1, 1/2, 1/3, or 1/4). Additionally, you might need to use a different IP network (to avoid conflicts with other students). Your autonomous system should remain 22, however.
+2c. Use Netmiko to push the configurations generated in exercise 2b to the nxos1 device and to the nxos2 device, respectively. Verify you are able to ping between the devices and also verify that the BGP session reaches the established state. ***Note***, you might need to use an alternate interface besides Ethernet 1/1 (you can use either Ethernet 1/1, 1/2, 1/3, or 1/4). Additionally, you might need to use a different IP network (to avoid conflicts with other students). Your autonomous system should remain 22, however.
 
 For this exercise you should store your Netmiko connection dictionaries in an external file named my_devices.py and should import nxos1, and nxos2 from that external file. Make sure that you use getpass() to enter the password in for these devices (as opposed to storing the definitions in the file).
 
-***Note, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
+***Note***, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
 
 
 3. Generate the following configuration output from an external Jinja2 template:
@@ -570,7 +570,7 @@ Both the IPv4 and the IPv6 address families should be controlled by Jinja2 condi
 
 4. Expand on exercise3 except use a for-loop to configure five VRFs. Each VRF should have a unique name and a unique route distinguisher. Each VRF should once again have the IPv4 and the IPv6 address families controlled by a conditional-variable passed into the template.
 
-***Note, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
+***Note***, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
 
 
 5. Start with the full running-config from cisco3.lasthop.io as a base template (for example 'cisco3_config.j2'). Modify this base template such that you use Jinja2 include statements to pull in sub-templates for the NTP servers, the AAA configuration, and for the clock settings.
@@ -611,7 +611,7 @@ The output from this should be the full configuration which is basically identic
 
 3. Using your external YAML file and your function located in my_funcs.py, use pyeapi to connect to arista4.lasthop.io and retrieve "show ip route". From this routing table data, extract all of the static and connected routes from the default VRF. Print these routes to the screen and indicate whether the route is a connected route or a static route. In the case of a static route, print the next hop address.
 
-4. ***Note, this exercise might be fairly challenging. Construct a new YAML file that contains the four Arista switches. This YAML file should contain all of the connection information need to create a pyeapi connection using the connect method. Using this inventory information and pyeapi, create a Python script that configures the following on the four Arista switches:  
+4. ***Note***, this exercise might be fairly challenging. Construct a new YAML file that contains the four Arista switches. This YAML file should contain all of the connection information need to create a pyeapi connection using the connect method. Using this inventory information and pyeapi, create a Python script that configures the following on the four Arista switches:  
 
 interface {{ intf_name }}
    ip address {{ intf_ip }}/{{ intf_mask }}
@@ -684,7 +684,7 @@ Use pyeapi to push this configuration to the four Arista switches. Use pyeapi an
 
 2. xmltodict basics
 
-2a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. ***Note, the newly created object is an OrderedDict; not a traditional dictionary.
+2a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. ***Note***, the newly created object is an OrderedDict; not a traditional dictionary.
 
 
 2b. Print the names and an index number of each security zone in the XML data from Exercise 2a. Your output should look similar to the following (tip, enumerate will probably help): 
@@ -736,7 +736,7 @@ zones-security-interfaces
 
 Namespaces in XML help to differentiate between conflicting element names. 
 
-5a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. ***Note this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
+5a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. ***Note*** this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
 
 
 5b. Similar to earlier exercises, use the find() method to access the text of the "proc_board_id" element (serial number). As this XML object contains namespace data, you will need to use the {*} namespace wildcard in the find() method. Your find call should look as follows:
@@ -897,7 +897,7 @@ print(etree.tostring(xml_out, pretty_print=True, encoding="unicode"))
 
 2c. Attempt to use the get_ntp_peers() method against both of the devices. Does this method work? Your code should gracefully handle any exceptions that occur. In other words, an exception that occurs due to this get_ntp_peers() method, should not cause the program to crash.
 
-2d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. ***Note, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
+2d. Create another function in "my_functions.py". This function should be named "create_backup" and should accept a NAPALM connection object as an argument. Using the NAPALM get_config() method, the function should retrieve and write the current running configuration to a file. The filename should be unique for each device. In other words, "cisco3" and "arista1" should each have a separate file that stores their running configuration. ***Note***, get_config() returns a dictionary where the running-config is referenced using the "running" key. Call this function as part of your main exercise2 and ensure that the configurations from both cisco3 and arista1 are backed up properly.
 
 
 3. NAPALM Config Merge
@@ -955,7 +955,7 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 
 2. Create a new file named my_functions.py. Move your function from exercise1 to this file. Name this function "ssh_command". Reuse functions from this file for the rest of the exercises. Complete the same task as Exercise 1b except this time use "legacy" threads to create a solution. Launch a separate thread for each device's SSH connection. Print the time required to complete the task for all of the devices. Move all of the device specific output printing to the called function (i.e. to the child thread). 
 
-3a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. ***Note, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
+3a. Create a new function that is a duplicate of your "ssh_command" function. Name this function "ssh_command2". This function should eliminate all printing to standard output and should instead return the show command output. ***Note***, in general, it is problematic to print in the child thread as you can get into race conditions between the threads. Using the "ThreadPoolExecutor" in Concurrent Futures execute "show version" on each of the devices defined in my_devices.py. Use the 'wait' method to ensure all of the futures have completed. Concurrent futures should be executing the ssh_command2 function in the child threads. Print the total execution time required to accomplish this task.
 
 3b. Instead of waiting for all of the futures to complete, use "as_completed" to print the future results as they come available. Reuse your "ssh_command2" function to accomplish this. Once again use the concurrent futures "ThreadPoolExecutor" and print the "show version" results to standard output. Additionally, print the total execution time to standard output.
 
@@ -963,7 +963,7 @@ Recall that the NX-OS platform requires a 'checkpoint' file for configuration re
 
 5. Using a context manager and a 'ProcessPoolExecutor', complete the same task as Exercise 4.
 
-6. Using a context manager, the ProcessPoolExecutor, and the map() method, create a solution that executes "show ip arp" on all of the devices defined in my_devices.py. ***Note, the Juniper device will require "show arp" instead of "show ip arp" so your solution will have to properly account for this.
+6. Using a context manager, the ProcessPoolExecutor, and the map() method, create a solution that executes "show ip arp" on all of the devices defined in my_devices.py. ***Note***, the Juniper device will require "show arp" instead of "show ip arp" so your solution will have to properly account for this.
 
 
 -----------------------------------------------------------------------------------------
@@ -990,9 +990,9 @@ curl -L -s https://netbox.lasthop.io/api/ --insecure
 You can also pipe this into the "jq" utility for prettier output:
 
 curl -L -s https://netbox.lasthop.io/api/ --insecure | jq
-***Note, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
+***Note***, you will possibly need to add the "-L" argument to all of the "curl" requests (this instructs "curl" to follow any redirects).
 
-1b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. ***Note, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
+1b. Use curl to access "https://netbox.lasthop.io/api/dcim/devices/". This API endpoint requires authentication; use the "-H" flag to provide this authentication information. ***Note***, the lab has a NETBOX_TOKEN environment variable. Consequently, you should be able to do the following:
 
 curl -H "Authorization: Token $NETBOX_TOKEN" https://netbox.lasthop.io/api/dcim/devices/ --insecure | jq
 
@@ -1026,7 +1026,7 @@ Then add the following key to your HTTP Headers:
 
 http_headers["Authorization"] = f"Token {token}"
 
-From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". ***Note, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
+From this returned data structure (the NetBox "/api/dcim/devices/"), print out all of the device "display_names". ***Note***, the response.json() will contain a "results" key. This "results" key will refer to a list of dictionaries. These dictionaries will contain information about each one of the devices in NetBox.
 
 3b. Using the same device information retrieved in exercise 3a, create and print a report to standard output. This report should contain the location, manufacturer, and status for each device. Your output should look similar to the following:
 
@@ -1108,13 +1108,13 @@ Pretty print the response.json() data from this HTTP GET. Please note the ID of 
 
 1c. Run pycodestyle against "fixme_orig.py". Create a copy of fixme_orig.py; name the new file fixme_pep8.py. Fix all of the pycodestyle errors that are in this fixme_pep8.py file.
 
-1d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. ***Note that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
+1d. Run pylama against the "fixme_pep8.py" file. At this point, Pylama should report no errors. ***Note*** that by default, Pylama will run pycodestyle against your code. Consequently, you should see similar warnings and errors as you did when executing pycodestyle. Pylama, however, also supports additional linters which can potentially identify other issues.
 
 2. Black
 
 2a. Copy the original "fixme_orig.py" file to a new file named "fixme_black.py". Run Black against this file in "diff" mode i.e. with the "--diff" flag to show the changes that Black *would* make to this file.
 
-2b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. ***Note, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
+2b. Run Black against this "fixme_black.py" file. Now run pycodestyle against this file. ***Note***, Black should have automatically fixed all of the pycodestyle issues. Pylint is a bit more pedantic so Pylint would still flag some issues on this file.
 
 3. pytest Introduction
 
