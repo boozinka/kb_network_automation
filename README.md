@@ -20,7 +20,7 @@ This course dives into Python as applied to Network Engineering.
 
 -----------------------------------------------------------------------------------------
 
-### Class 1.
+### Class 1. Git and Netmiko (Part1)
 
 - [ ] I.    Why care about Git?
 - [ ] II.   Git - Getting Started
@@ -130,7 +130,7 @@ This course dives into Python as applied to Network Engineering.
 
 -----------------------------------------------------------------------------------------
 
-### Class 2.
+### Class 2. Netmiko (Part2)
 
 - [ ] I.    Netmiko Handling Additional Prompts
 - [ ] II.   Netmiko Delay Factor              
@@ -220,7 +220,7 @@ This course dives into Python as applied to Network Engineering.
 
 -----------------------------------------------------------------------------------------
 
-### Class 3.
+### Class 3. Data Structures, YAML, JSON and CiscoConfParse
 
 - [ ] I.    Handling Complex Data Structures
 - [ ] II.   Changing Data Structure Format             
@@ -376,7 +376,7 @@ This course dives into Python as applied to Network Engineering.
 
 -----------------------------------------------------------------------------------------
 
-### Class 4.
+### Class 4. Python Libraries and TextFSM
 
 - [ ] I.    Python Libraries and PIP 
 - [ ] II.   sys.path and PYTHONPATH
@@ -390,93 +390,95 @@ This course dives into Python as applied to Network Engineering.
 - [ ] X.    TextFSM Filldown 
 
 
+### Exercises:
+
 1. Using the following 'show interface status' output: 
 
-Port      Name  Status       Vlan  Duplex Speed Type 
-Gi0/1/0         notconnect   1     auto   auto  10/100/1000BaseTX
-Gi0/1/1         notconnect   1     auto   auto  10/100/1000BaseTX
-Gi0/1/2         notconnect   1     auto   auto  10/100/1000BaseTX
-Gi0/1/3         notconnect   1     auto   auto  10/100/1000BaseTX
+       Port      Name  Status       Vlan  Duplex Speed Type 
+       Gi0/1/0         notconnect   1     auto   auto  10/100/1000BaseTX
+       Gi0/1/1         notconnect   1     auto   auto  10/100/1000BaseTX
+       Gi0/1/2         notconnect   1     auto   auto  10/100/1000BaseTX
+       Gi0/1/3         notconnect   1     auto   auto  10/100/1000BaseTX
 
-Create a TextFSM template that extracts only the 'Port' column (i.e. the interface name). The output of the FSM table should look as follows: 
+   Create a TextFSM template that extracts only the 'Port' column (i.e. the interface name). The output of the FSM table should look as follows: 
 
-$ textfsm.py ex1_show_int_status.tpl ex1_show_int_status.txt
-...
-FSM Table:
-['PORT_NAME']
-['Gi0/1/0']
-['Gi0/1/1']
-['Gi0/1/2']
-['Gi0/1/3']
+       $ textfsm.py ex1_show_int_status.tpl ex1_show_int_status.txt
+       ...
+       FSM Table:
+       ['PORT_NAME']
+       ['Gi0/1/0']
+       ['Gi0/1/1']
+       ['Gi0/1/2']
+       ['Gi0/1/3']
 
 
 2. Expand the TextFSM template created in exercise1 such that you extract the Port, Status, Vlan, Duplex, Speed, and Type columns. For the purposes of this exercise you can ignore the 'Name' column and assume it will always be empty. The output of the FSM table should look similar to the following: 
 
 $ textfsm.py ex2_show_int_status.tpl ex2_show_int_status.txt 
-...
-FSM Table:
-['PORT_NAME', 'STATUS', 'VLAN', 'DUPLEX', 'SPEED', 'PORT_TYPE']
-['Gi0/1/0','notconnect','1','auto','auto','10/100/1000BaseTX']
-['Gi0/1/1','notconnect','1','auto','auto','10/100/1000BaseTX']
-['Gi0/1/2','notconnect','1','auto','auto','10/100/1000BaseTX']
-['Gi0/1/3','notconnect','1','auto','auto','10/100/1000BaseTX']
+       ...
+       FSM Table:
+       ['PORT_NAME', 'STATUS', 'VLAN', 'DUPLEX', 'SPEED', 'PORT_TYPE']
+       ['Gi0/1/0','notconnect','1','auto','auto','10/100/1000BaseTX']
+       ['Gi0/1/1','notconnect','1','auto','auto','10/100/1000BaseTX']
+       ['Gi0/1/2','notconnect','1','auto','auto','10/100/1000BaseTX']
+       ['Gi0/1/3','notconnect','1','auto','auto','10/100/1000BaseTX']
 
 
 3. Using the 'show interface Ethernet2/1' output from nxos1 (see link below), extract the interface name, line status, admin state, MAC address, MTU, duplex, and speed using TextFSM.
 
-https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex3_nxos_show_interface_ethernet_2_1.txt
+       https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex3_nxos_show_interface_ethernet_2_1.txt
 
 
 4. Use TextFSM to parse the 'show arp' output from a Juniper SRX (see link below). Extract the following fields into tabular data: MAC Address, Address, Name, Interface.
 
-https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex4_junos_show_arp.txt
+       https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex4_junos_show_arp.txt
 
 
 5. Parse the 'show lldp neighbors' output from nxos1 (see link below). From this output use TextFSM to extract the Device ID, Local Intf, Capability, and Port ID.
 
-https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex5_nxos_show_lldp_neighbors.txt
+       https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex5_nxos_show_lldp_neighbors.txt
 
 
 6. Parse the following 'show ip bgp summary' output (see link below). From this output, extract the following fields: Neighbor, Remote AS, Up_Down, and State_PrefixRcvd. Also include the Local AS and the BGP Router ID in each row of the tabular output (hint: use filldown for this). ***Note***, in order to simplify this problem only worry about the data shown in the output (in other words, don't worry about all possible values that could be present in the output).
 
-Second hint: remember there is an implicit 'EOF -> Record' at the end of the template (by default).
+   Second hint: remember there is an implicit 'EOF -> Record' at the end of the template (by default).
 
-https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex6_show_ip_bgp_summary.txt
+       https://github.com/ktbyers/pyplus_course/blob/master/class4/exercises/ex6_show_ip_bgp_summary.txt
 
 
 7. Using your TextFSM template and the 'show interface status' data from exercise2, create a Python program that uses TextFSM to parse this data. In this Python program, read the show interface status data from a file and process it using the TextFSM template. From this parsed-output, create a list of dictionaries. The program output should look as follows: 
 
-$ python ex7_show_int_status.py 
+       $ python ex7_show_int_status.py 
 
-[{'DUPLEX': 'auto',
-  'PORT_NAME': 'Gi0/1/0',
-  'PORT_TYPE': '10/100/1000BaseTX',
-  'SPEED': 'auto',
-  'STATUS': 'notconnect',
-  'VLAN': '1'},
- {'DUPLEX': 'auto',
-  'PORT_NAME': 'Gi0/1/1',
-  'PORT_TYPE': '10/100/1000BaseTX',
-  'SPEED': 'auto',
-  'STATUS': 'notconnect',
-  'VLAN': '1'},
- {'DUPLEX': 'auto',
-  'PORT_NAME': 'Gi0/1/2',
-  'PORT_TYPE': '10/100/1000BaseTX',
-  'SPEED': 'auto',
-  'STATUS': 'notconnect',
-  'VLAN': '1'},
- {'DUPLEX': 'auto',
-  'PORT_NAME': 'Gi0/1/3',
-  'PORT_TYPE': '10/100/1000BaseTX',
-  'SPEED': 'auto',
-  'STATUS': 'notconnect',
-  'VLAN': '1'}]
+       [{'DUPLEX': 'auto',
+         'PORT_NAME': 'Gi0/1/0',
+         'PORT_TYPE': '10/100/1000BaseTX',
+         'SPEED': 'auto',
+         'STATUS': 'notconnect',
+         'VLAN': '1'},
+        {'DUPLEX': 'auto',
+         'PORT_NAME': 'Gi0/1/1',
+         'PORT_TYPE': '10/100/1000BaseTX',
+         'SPEED': 'auto',
+         'STATUS': 'notconnect',
+         'VLAN': '1'},
+        {'DUPLEX': 'auto',
+         'PORT_NAME': 'Gi0/1/2',
+         'PORT_TYPE': '10/100/1000BaseTX',
+         'SPEED': 'auto',
+         'STATUS': 'notconnect',
+         'VLAN': '1'},
+        {'DUPLEX': 'auto',
+         'PORT_NAME': 'Gi0/1/3',
+         'PORT_TYPE': '10/100/1000BaseTX',
+         'SPEED': 'auto',
+         'STATUS': 'notconnect',
+         'VLAN': '1'}]
 
 
 -----------------------------------------------------------------------------------------
 
-### Class 5.
+### Class 5. Jinja2
 
 - [ ] I.    Jinja2 Templating
 - [ ] II.   Jinja2 Constructs
@@ -485,113 +487,115 @@ $ python ex7_show_int_status.py
 - [ ] V.    Jinja2 Conditionals (Part1)
 - [ ] VI.   Jinja2 Whitespace Stripping
 - [ ] VII.  Jinja2 Conditionals (Part2)
-- [ ] VIII. Jinja2 Nested Conditionals​
-- [ ] IX.   Jinja2 Loops (Part1)​
+- [ ] VIII. Jinja2 Nested Conditionals
+- [ ] IX.   Jinja2 Loops (Part1)
 - [ ] X.    Jinja2 Loops (Part2)
-- [ ] XI.   Jinja2 Loop Nesting​
+- [ ] XI.   Jinja2 Loop Nesting
 - [ ] XII.  Jinja2 Lists
 - [ ] XIII. Jinja2 Dictionaries
 - [ ] XIV.  Jinja2 Create Variables and Filters
-- [ ] XV.   Jinja2 Includes​
+- [ ] XV.   Jinja2 Includes
 - [ ] XVI.  Jinja2 Other Advanced Topics
+
+### Exercises:
 
 1. Create a Python program that uses Jinja2 to generate the below BGP configuration. Your template should be directly embedded inside of your program as a string and should use for the following variables: local_as, peer1_ip, peer1_as, peer2_ip, peer2_as.
 
-router bgp 10
-  neighbor 10.1.20.2 remote-as 20
-    update-source loopback99
-    ebgp-multihop 2
-    address-family ipv4 unicast
-  neighbor 10.1.30.2 remote-as 30
-    address-family ipv4 unicast
+       router bgp 10
+         neighbor 10.1.20.2 remote-as 20
+           update-source loopback99
+           ebgp-multihop 2
+           address-family ipv4 unicast
+         neighbor 10.1.30.2 remote-as 30
+           address-family ipv4 unicast
 
 
 2a. Use Python and Jinja2 to generate the below NX-OS interface configuration. You should use an external template file and a Jinja2 environment to accomplish this. The interface, ip_address, and netmask should all be variables in the Jinja2 template.
  
 
-nxos1
-interface Ethernet1/1
-  ip address 10.1.100.1/24
-
-nxos2
-interface Ethernet1/1
-  ip address 10.1.100.2/24
+       nxos1
+       interface Ethernet1/1
+         ip address 10.1.100.1/24
+       
+       nxos2
+       interface Ethernet1/1
+         ip address 10.1.100.2/24
 
 
 
 2b. Expand your Jinja2 template such that both the following interface and BGP configurations are generated for nxos1 and nxos2. The interface name, IP address, netmask, local_as, and peer_ip should all be variables in the template. This is iBGP so the remote_as will be the same as the local_as.
 
-nxos1
-
-interface Ethernet1/1
-  ip address 10.1.100.1/24
-
-router bgp 22
-  neighbor 10.1.100.2 remote-as 22
-    address-family ipv4 unicast
-
-
-nxos2
-
-interface Ethernet1/1
-  ip address 10.1.100.2/24
-
-router bgp 22
-  neighbor 10.1.100.1 remote-as 22
-    address-family ipv4 unicast
+        nxos1
+        
+        interface Ethernet1/1
+          ip address 10.1.100.1/24
+        
+        router bgp 22
+          neighbor 10.1.100.2 remote-as 22
+            address-family ipv4 unicast
+        
+        
+        nxos2
+        
+        interface Ethernet1/1
+          ip address 10.1.100.2/24
+        
+        router bgp 22
+          neighbor 10.1.100.1 remote-as 22
+            address-family ipv4 unicast
 
 
 
 2c. Use Netmiko to push the configurations generated in exercise 2b to the nxos1 device and to the nxos2 device, respectively. Verify you are able to ping between the devices and also verify that the BGP session reaches the established state. ***Note***, you might need to use an alternate interface besides Ethernet 1/1 (you can use either Ethernet 1/1, 1/2, 1/3, or 1/4). Additionally, you might need to use a different IP network (to avoid conflicts with other students). Your autonomous system should remain 22, however.
 
-For this exercise you should store your Netmiko connection dictionaries in an external file named my_devices.py and should import nxos1, and nxos2 from that external file. Make sure that you use getpass() to enter the password in for these devices (as opposed to storing the definitions in the file).
+   For this exercise you should store your Netmiko connection dictionaries in an external file named my_devices.py and should import nxos1, and nxos2 from that external file. Make sure that you use getpass() to enter the password in for these devices (as opposed to storing the definitions in the file).
 
-***Note***, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
+   ***Note***, this exercise gets a bit complicated when it is all said and done (templating, pushing configuration to devices, verifying the changes were successful).
 
 
 3. Generate the following configuration output from an external Jinja2 template:
 
-​vrf definition blue
- rd 100:1
- !
- address-family ipv4
-  route-target export 100:1
-  route-target import 100:1
- exit-address-family
- !
- address-family ipv6
-  route-target export 100:1
-  route-target import 100:1
- exit-address-family
+       vrf definition blue
+       rd 100:1
+       !
+       address-family ipv4
+        route-target export 100:1
+        route-target import 100:1
+       exit-address-family
+       !
+       address-family ipv6
+        route-target export 100:1
+        route-target import 100:1
+       exit-address-family
 
 
-Both the IPv4 and the IPv6 address families should be controlled by Jinja2 conditionals (in other words, the entire 'address-family ipv4' section and the entire 'address-family ipv6' sections can be dropped from the generated output depending on the value of two variables that you pass into your template--for example, the 'ipv4_enabled' and the 'ipv6_enabled' variables). Additionally, both the vrf_name and the rd_number should be variables in the template. Make sure that you control the whitespace in your output such that the configuration looks visually correct.
+   Both the IPv4 and the IPv6 address families should be controlled by Jinja2 conditionals (in other words, the entire 'address-family ipv4' section and the entire 'address-family ipv6' sections can be dropped from the generated output depending on the value of two variables that you pass into your template--for example, the 'ipv4_enabled' and the 'ipv6_enabled' variables). Additionally, both the vrf_name and the rd_number should be variables in the template. Make sure that you control the whitespace in your output such that the configuration looks visually correct.
 
 
 4. Expand on exercise3 except use a for-loop to configure five VRFs. Each VRF should have a unique name and a unique route distinguisher. Each VRF should once again have the IPv4 and the IPv6 address families controlled by a conditional-variable passed into the template.
 
-***Note***, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
+   ***Note***, you will want to pass in a list or dictionary of VRFs that you loop over in your Jinja2 template.
 
 
 5. Start with the full running-config from cisco3.lasthop.io as a base template (for example 'cisco3_config.j2'). Modify this base template such that you use Jinja2 include statements to pull in sub-templates for the NTP servers, the AAA configuration, and for the clock settings.
 
-Your base template should have the following items (in the proper locations):
+   Your base template should have the following items (in the proper locations):
 
-{% include 'aaa.j2' %}
+       {% include 'aaa.j2' %}
 
-{% include 'clock.j2' %}
+       {% include 'clock.j2' %}
 
-{% include 'ntp.j2' %}
+       {% include 'ntp.j2' %}
 
 
-The child templates being pulled in should contain the NTP configuration, the AAA configuration, and the clock configuration. The two NTP servers, the timezone, timezone_offset, and timezone_dst (daylight savings timezone name) should be variables in these child templates.
+   The child templates being pulled in should contain the NTP configuration, the AAA configuration, and the clock configuration. The two NTP servers, the timezone, timezone_offset, and timezone_dst (daylight savings timezone name) should be variables in these child templates.
 
-The output from this should be the full configuration which is basically identical to the current running configuration on cisco3.blah.blah.
+   The output from this should be the full configuration which is basically identical to the current running configuration on cisco3.blah.blah.
 
 
 -----------------------------------------------------------------------------------------
 
-### Class 6.
+### Class 6. Arista eAPI
 
 - [ ] I.    Arista eAPI Introduction
 - [ ] II.   Arista eAPI Request Structure
@@ -603,45 +607,49 @@ The output from this should be the full configuration which is basically identic
 - [ ] VIII. Using the .api() method in pyeapi
 - [ ] IX.   Arista eAPI Conclusion
 
+### Exercises:
+
 1. Using the pyeapi library, connect to arista3.lasthop.io and execute 'show ip arp'. From this ARP table data, print out a mapping of all of the IP addresses and their corresponding MAC addresses.
 
-2a. Define an Arista device in an external YAML file (use arista4.blah.blah for the device). In your YAML file, make sure the key names exactly match the names required for use with pyeapi and the connect() method. In other words, you should be able to execute 'connect(**device_dict)' where device_dict was retrieved from your YAML file. Do not store the lab password in this YAML file, instead set the password using getpass() in your Python program. Using this Arista device information stored in a YAML file, repeat the 'show ip arp' retrieval using pyeapi. Once again, from this ARP table data, print out a mapping of all of the IP addresses and their corresponding MAC addresses.
+2. Importing YAML and Functions.
 
-2b. Create a Python module named 'my_funcs.py'. In this file create two functions: function1 should read the YAML file you created in exercise 2a and return the corresponding data structure; function2 should handle the output printing of the ARP entries (in other words, create a separate function that handles all printing to standard out of the 'show ip arp' data). Create a new Python program based on exercise2a except the YAML file loading and the output printing is accomplished using the functions defined in my_funcs.py.
+   a. Define an Arista device in an external YAML file (use arista4.blah.blah for the device). In your YAML file, make sure the key names exactly match the names required for use with pyeapi and the connect() method. In other words, you should be able to execute 'connect(**device_dict)' where device_dict was retrieved from your YAML file. Do not store the lab password in this YAML file, instead set the password using getpass() in your Python program. Using this Arista device information stored in a YAML file, repeat the 'show ip arp' retrieval using pyeapi. Once again, from this ARP table data, print out a mapping of all of the IP addresses and their corresponding MAC addresses.
+
+   b. Create a Python module named 'my_funcs.py'. In this file create two functions: function1 should read the YAML file you created in exercise 2a and return the corresponding data structure; function2 should handle the output printing of the ARP entries (in other words, create a separate function that handles all printing to standard out of the 'show ip arp' data). Create a new Python program based on exercise2a except the YAML file loading and the output printing is accomplished using the functions defined in my_funcs.py.
 
 3. Using your external YAML file and your function located in my_funcs.py, use pyeapi to connect to arista4.lasthop.io and retrieve "show ip route". From this routing table data, extract all of the static and connected routes from the default VRF. Print these routes to the screen and indicate whether the route is a connected route or a static route. In the case of a static route, print the next hop address.
 
 4. ***Note***, this exercise might be fairly challenging. Construct a new YAML file that contains the four Arista switches. This YAML file should contain all of the connection information need to create a pyeapi connection using the connect method. Using this inventory information and pyeapi, create a Python script that configures the following on the four Arista switches:  
 
-interface {{ intf_name }}
-   ip address {{ intf_ip }}/{{ intf_mask }}
+       interface {{ intf_name }}
+          ip address {{ intf_ip }}/{{ intf_mask }}
 
-The {{ intf_name }} should be a Loopback interface between 1 and 99 (for example Loopback99).
+   The {{ intf_name }} should be a Loopback interface between 1 and 99 (for example Loopback99).
 
-The {{ intf_ip }} should be an address from the 172.31.X.X address space. The {{ intf_mask }} should be either a /24 or a /30.
+   The {{ intf_ip }} should be an address from the 172.31.X.X address space. The {{ intf_mask }} should be either a /24 or a /30.
 
-Each Arista switch should have a unique loopback number, and a unique interface IP address.
+   Each Arista switch should have a unique loopback number, and a unique interface IP address.
 
-You should use Jinja2 templating to generate the configuration for each Arista switch.
+   You should use Jinja2 templating to generate the configuration for each Arista switch.
 
-The data for {{ intf_name }} and for {{ intf_ip }} should be stored in your YAML file and should be associated with each individual Arista device. For example, here is what 'arista4' might look like in the YAML file:
+   The data for {{ intf_name }} and for {{ intf_ip }} should be stored in your YAML file and should be associated with each individual Arista device. For example, here is what 'arista4' might look like in the YAML file:
 
-arista4:
-  transport: https
-  host: arista4.blah.blah
-  username: fred
-  port: 443
-  data:
-    intf_name: Loopback99
-    intf_ip: 172.31.1.13
-    intf_mask: 30
+       arista4:
+         transport: https
+         host: arista4.blah.blah
+         username: fred
+         port: 443
+         data:
+           intf_name: Loopback99
+           intf_ip: 172.31.1.13
+           intf_mask: 30
 
-Use pyeapi to push this configuration to the four Arista switches. Use pyeapi and "show ip interface brief" to display the IP address table after the configuration changes have been made.
+   Use pyeapi to push this configuration to the four Arista switches. Use pyeapi and "show ip interface brief" to display the IP address table after the configuration changes have been made.
 
 
 -----------------------------------------------------------------------------------------
 
-### Class 7.
+### Class 7. XML & NX-API
 
 - [ ] I.     XML - Why Care? 
 - [ ] II.    XML Introduction
@@ -659,116 +667,101 @@ Use pyeapi to push this configuration to the four Arista switches. Use pyeapi an
 - [ ] XIV.   NX-API and JSON-RPC
 - [ ] XV.    NX-API and XML
 
+### Exercises:
 
 1. Reading and accessing an XML file:
 
-1a. Using the show_security_zones.xml file, read the file contents and parse the file using etree.fromstring(). Print out the newly created XML variable and also print out the variable's type. Your output should look similar to the following: 
+   a. Using the show_security_zones.xml file, read the file contents and parse the file using etree.fromstring(). Print out the newly created XML variable and also print out the variable's type. Your output should look similar to the following: 
 
-<Element zones-information at 0x7f3271194b48>
-<class 'lxml.etree._Element'>
+       <Element zones-information at 0x7f3271194b48>
+       <class 'lxml.etree._Element'>
 
-1b. Using your XML variable from exercise 1a, print out the entire XML tree in a readable format (ensure that the output string is a unicode string).
+   b. Using your XML variable from exercise 1a, print out the entire XML tree in a readable format (ensure that the output string is a unicode string).
 
+   c. Print out the root element tag name (this tag should have a value of "zones-information"). Print the number of child elements of the root element (you can retrieve this using the len() function).
 
-1c. Print out the root element tag name (this tag should have a value of "zones-information"). Print the number of child elements of the root element (you can retrieve this using the len() function).
+   d. Using both direct indices and the getchildren() method, obtain the first child element and print its tag name. 
 
+   e. Create a variable named "trust_zone". Assign this variable to be the first "zones-security" element in the XML tree. Access this newly created variable and print out the text of the "zones-security-zonename" child.
 
-1d. Using both direct indices and the getchildren() method, obtain the first child element and print its tag name. 
-
-
-1e. Create a variable named "trust_zone". Assign this variable to be the first "zones-security" element in the XML tree. Access this newly created variable and print out the text of the "zones-security-zonename" child.
-
-
-1f. Iterate through all of the child elements of the "trust_zone" variable. Print out the tag name for each child element.
+   f. Iterate through all of the child elements of the "trust_zone" variable. Print out the tag name for each child element.
 
 
 2. xmltodict basics
 
-2a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. ***Note***, the newly created object is an OrderedDict; not a traditional dictionary.
+   a. Using xmltodict, load the show_security_zones.xml file as a Python dictionary. Print out this new variable and its type. ***Note***, the newly created object is an OrderedDict; not a traditional dictionary.
 
+   b. Print the names and an index number of each security zone in the XML data from Exercise 2a. Your output should look similar to the following (tip, enumerate will probably help): 
 
-2b. Print the names and an index number of each security zone in the XML data from Exercise 2a. Your output should look similar to the following (tip, enumerate will probably help): 
-
-Security Zone #1: trust
-Security Zone #2: untrust
-Security Zone #3: junos-host
-
+       Security Zone #1: trust
+       Security Zone #2: untrust
+       Security Zone #3: junos-host
 
 3. xmltodict: single vs multiple elements
 
-3a. Open the following two XML files: show_security_zones.xml and show_security_zones_single_trust.xml. Use a generic function that accepts an argument "filename" to open and read a file. Inside this function, use xmltodict to parse the contents of the file. Your function should return the xmltodict data structure. Using this function, create two variables to store the xmltodict data structure from the two files.
+   a. Open the following two XML files: show_security_zones.xml and show_security_zones_single_trust.xml. Use a generic function that accepts an argument "filename" to open and read a file. Inside this function, use xmltodict to parse the contents of the file. Your function should return the xmltodict data structure. Using this function, create two variables to store the xmltodict data structure from the two files.
 
+   b. Compare the Python "type" of the elements at ['zones-information']['zones-security']. What is the difference between the two data types? Why?
 
-3b. Compare the Python "type" of the elements at ['zones-information']['zones-security']. What is the difference between the two data types? Why?
+   c. Optional - create a second function that uses xmltodict to read and parse a filename that you pass in. This function should support a "force_list" argument that is passed to xmltodict.parse(). Reminder, the force_list argument of xmltodict takes a dictionary where the dictionary key-name is the XML element that is required to be a list. For example:
 
+       force_list={"zones-security": True}
 
-3c. Optional - create a second function that uses xmltodict to read and parse a filename that you pass in. This function should support a "force_list" argument that is passed to xmltodict.parse(). Reminder, the force_list argument of xmltodict takes a dictionary where the dictionary key-name is the XML element that is required to be a list. For example:
-
-force_list={"zones-security": True}
-
-Use this new function to parse the "show_security_zones_single_trust.xml". Verify the Python data type is now a list for the ['zones-information']['zones-security'] element.
+   Use this new function to parse the "show_security_zones_single_trust.xml". Verify the Python data type is now a list for the ['zones-information']['zones-security'] element.
 
 
 4. Use lxml to find() elements in an XML tree
 
-4a. Use the find() method to retrieve the first "zones-security" element. Print out the tag of this element and of all its children elements. Your output should be similar to the following:
+   a. Use the find() method to retrieve the first "zones-security" element. Print out the tag of this element and of all its children elements. Your output should be similar to the following:
 
-Find tag of the first zones-security element
---------------------
-zones-security
+       Find tag of the first zones-security element
+       --------------------
+       zones-security
+       
+       Find tag of all child elements of the first zones-security element
+       --------------------
+       zones-security-zonename
+       zones-security-send-reset
+       zones-security-policy-configurable
+       zones-security-interfaces-bound
+       zones-security-interfaces
 
-Find tag of all child elements of the first zones-security element
---------------------
-zones-security-zonename
-zones-security-send-reset
-zones-security-policy-configurable
-zones-security-interfaces-bound
-zones-security-interfaces
+   b. Use the find() method to find the first "zones-security-zonename". Print out the zone name for that element (the "text" of that element).
 
-
-4b. Use the find() method to find the first "zones-security-zonename". Print out the zone name for that element (the "text" of that element).
-
-
-4c. Use the findall() method to find all occurrences of "zones-security". For each of these security zones, print out the security zone name ("zones-security-zonename", the text of that element).
-
+   c. Use the findall() method to find all occurrences of "zones-security". For each of these security zones, print out the security zone name ("zones-security-zonename", the text of that element).
 
 5. Dealing with Namespaces
 
-Namespaces in XML help to differentiate between conflicting element names. 
+   Namespaces in XML help to differentiate between conflicting element names. 
 
-5a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. ***Note*** this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
+   a. Load the show_version.xml file (originally from a Cisco NX-OS device) using the etree.fromstring() method. ***Note*** this XML document, unlike the previous documents, contains the document encoding information. Because the document encoding is at the top of the file, you will need to read the file using "rb" mode (the "b" signifies binary mode). Print out the the namespace map of this XML object. You can accomplish this by using the .nsmap attribute of your XML object.
 
+   b. Similar to earlier exercises, use the find() method to access the text of the "proc_board_id" element (serial number). As this XML object contains namespace data, you will need to use the {*} namespace wildcard in the find() method. Your find call should look as follows:
 
-5b. Similar to earlier exercises, use the find() method to access the text of the "proc_board_id" element (serial number). As this XML object contains namespace data, you will need to use the {*} namespace wildcard in the find() method. Your find call should look as follows:
+       find(".//{*}proc_board_id")
 
-find(".//{*}proc_board_id")
-
-The {*} is a namespace wildcard and says to match ALL namespaces.
-
+   The {*} is a namespace wildcard and says to match ALL namespaces.
 
 6. NX-API using json-rpc and the nxapi_plumbing library
 
-6a. Create an nxapi_plumbing "Device" object for nxos1. The api_format should be "jsonrpc" and the transport should be "https" (port 8443). Use getpass() to capture the device's password. Send the "show interface Ethernet1/1" command to the device, parse the output, and print out the following information:
+   a. Create an nxapi_plumbing "Device" object for nxos1. The api_format should be "jsonrpc" and the transport should be "https" (port 8443). Use getpass() to capture the device's password. Send the "show interface Ethernet1/1" command to the device, parse the output, and print out the following information:
 
-Interface: Ethernet1/1; State: up; MTU: 1500
-
+       Interface: Ethernet1/1; State: up; MTU: 1500
 
 7. NX-API using XML and the nxapi_plumbing library
 
-7a. Create an nxapi_plumbing "Device" object for nxos1. The api_format should be "xml" and the transport should be "https" (port 8443). Use getpass() to capture the device's password. Send the "show interface Ethernet1/1" command to the device, parse the output, and print out the following information:
+   a. Create an nxapi_plumbing "Device" object for nxos1. The api_format should be "xml" and the transport should be "https" (port 8443). Use getpass() to capture the device's password. Send the "show interface Ethernet1/1" command to the device, parse the output, and print out the following information:
 
-Interface: Ethernet1/1; State: up; MTU: 1500
+       Interface: Ethernet1/1; State: up; MTU: 1500
 
+   b. Run the following two show commands on the nxos1 device using a single method and passing in a list of commands: "show system uptime" and "show system resources". Print the XML output from these two commands.
 
-7b. Run the following two show commands on the nxos1 device using a single method and passing in a list of commands: "show system uptime" and "show system resources". Print the XML output from these two commands.
-
-
-7c. Using the nxapi_plumbing config_list() method, configure two loopbacks on nxos1 including interface descriptions. Pick random loopback interface numbers between 100 and 199.
+   c. Using the nxapi_plumbing config_list() method, configure two loopbacks on nxos1 including interface descriptions. Pick random loopback interface numbers between 100 and 199.
 
 
 -----------------------------------------------------------------------------------------
  
-### Class 8.
+### Class 8. NETCONF and Juniper's PyEZ
 
 - [ ] I.    NETCONF Overview
 - [ ] II.   NETCONF and ncclient
@@ -780,6 +773,7 @@ Interface: Ethernet1/1; State: up; MTU: 1500
 - [ ] VIII. Juniper PyEZ - Configuration and XML
 - [ ] IX.   Juniper PyEZ - RPC
 
+### Exercises:
 
 1. PyEZ basic connection and facts:
 
